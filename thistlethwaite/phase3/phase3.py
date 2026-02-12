@@ -1,11 +1,8 @@
 from constants.move import Move
 from cubie.encoder.corner_permutation_parity_encoder import CornerPermutationParityEncoder
 from cubie.encoder.corner_tetrad_encoder import CornerTetradEncoder
-from cubie.encoder.corner_tetrad_permutation_encoder import CornerTetradPermutationEncoder
 from cubie.encoder.corner_tetrad_permutation_parity_encoder import CornerTetradPermutationParityEncoder
 from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncoder
-from thistlethwaite.offline.generated.ct_pruning_table import CT_PRUNING_TABLE
-from thistlethwaite.offline.generated.lr_pruning_table import LR_PRUNING_TABLE
 
 
 class Phase3:
@@ -25,9 +22,11 @@ class Phase3:
 
     MAX_DEPTH = 13
 
-    def __init__(self):
+    def __init__(self, lr_pruning_table: list[int], ct_pruning_table: list[int]):
         self.left_right_edge_slice_encoder = LeftRightEdgeSliceEncoder()
         self.corner_tetrad_encoder = CornerTetradEncoder()
+        self.__lr_pruning_table = lr_pruning_table
+        self.__ct_pruning_table = ct_pruning_table
 
     def phase_solved(self, cubie):
         return self.heuristic(cubie) == 0
@@ -38,5 +37,7 @@ class Phase3:
         permutation_parity = CornerPermutationParityEncoder.encode_cubie(cubie)
         corner_tetrad_permutation_parity = CornerTetradPermutationParityEncoder.encode_cubie(cubie)
 
-        return max(LR_PRUNING_TABLE[left_right_edge_slice], CT_PRUNING_TABLE[corner_tetrad], permutation_parity, corner_tetrad_permutation_parity)
-
+        return max(self.__lr_pruning_table[left_right_edge_slice],
+                   self.__ct_pruning_table[corner_tetrad],
+                   permutation_parity,
+                   corner_tetrad_permutation_parity)

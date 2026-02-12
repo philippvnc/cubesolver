@@ -9,6 +9,13 @@ from cubie.encoder.edge_half_turn_permutation_encoder import EdgeHalfTurnPermuta
 from cubie.encoder.edge_orientation_encoder import EdgeOrientationEncoder
 from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncoder
 from cubie.encoder.up_down_edge_slice_encoder import UpDownEdgeSliceEncoder
+from generated.co_pruning_table import CO_PRUNING_TABLE
+from generated.cp_pruning_table import CP_PRUNING_TABLE
+from generated.ct_pruning_table import CT_PRUNING_TABLE
+from generated.eo_pruning_table import EO_PRUNING_TABLE
+from generated.ep_pruning_table import EP_PRUNING_TABLE
+from generated.lr_pruning_table import LR_PRUNING_TABLE
+from generated.ud_pruning_table import UD_PRUNING_TABLE
 from thistlethwaite.phase1.phase1 import Phase1
 from thistlethwaite.phase2.phase2 import Phase2
 from thistlethwaite.phase3.phase3 import Phase3
@@ -20,18 +27,18 @@ Thistlethwaite cube solver, solves 4 phases iteratively and joins solutions.
 '''
 class Thistlethwaite:
 
-    PHASES = [
-        Phase1(),
-        Phase2(),
-        Phase3(),
-        Phase4()
+    __PHASES = [
+        Phase1(EO_PRUNING_TABLE),
+        Phase2(CO_PRUNING_TABLE, UD_PRUNING_TABLE),
+        Phase3(LR_PRUNING_TABLE, CT_PRUNING_TABLE),
+        Phase4(CP_PRUNING_TABLE, EP_PRUNING_TABLE)
     ]
 
     @staticmethod
     def solve(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> list[int] | None:
         solution: list[int] = []
 
-        for phase in Thistlethwaite.PHASES:
+        for phase in Thistlethwaite.__PHASES:
             cubie, phase_solution = Thistlethwaite.solve_phase(cubie, phase)
             solution.extend(phase_solution)
 

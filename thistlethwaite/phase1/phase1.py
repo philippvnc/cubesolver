@@ -1,5 +1,4 @@
 from constants.move import Move
-from thistlethwaite.offline.generated.eo_pruning_table import EO_PRUNING_TABLE
 from cubie.encoder.edge_orientation_encoder import EdgeOrientationEncoder
 
 
@@ -28,12 +27,12 @@ class Phase1:
 
     MAX_DEPTH = 7
 
-    def __init__(self):
-        pass
+    def __init__(self, eo_pruning_table: list[int]):
+        self.__eo_pruning_table = eo_pruning_table
 
     def phase_solved(self, cubie):
         return self.heuristic(cubie) == 0
 
     def heuristic(self, cubie) -> int:
         eo = EdgeOrientationEncoder.from_cubie(cubie)
-        return EO_PRUNING_TABLE[eo]
+        return self.__eo_pruning_table[eo]
