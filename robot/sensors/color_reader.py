@@ -1,0 +1,24 @@
+from pybricks.pupdevices import ColorSensor
+
+from robot.output.feedback import Feedback
+
+
+class ColorReader:
+    __LIGHT_INTENSITY = 50
+
+    def __init__(self, sensor: ColorSensor, feedback: Feedback):
+        self.__sensor = sensor
+        self.__feedback = feedback
+        self.turn_off_lights()
+
+    def read(self) -> tuple[int, int, int]:
+        color = self.__sensor.hsv()
+        self.__feedback.show_color(color)
+        return color.h, color.s, color.v
+
+    def turn_off_lights(self):
+        self.__sensor.lights.off()
+        self.__feedback.show_color(None)
+
+    def turn_on_lights(self):
+        self.__sensor.lights.on((self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY))

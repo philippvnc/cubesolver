@@ -1,0 +1,62 @@
+from pybricks.pupdevices import Motor
+
+from constants.turn_amount import TurnAmount
+from robot.sensors.cube_detector import CubeDetector
+
+
+class Turntable:
+    # unfortunately this value depends on axle and gear positions
+    __INITIAL_PHYSICAL_ANGLE_OFFSET = 68
+    __CALIBRATION_INCREMENT = 120
+    __ANGLE_PER_AMOUNT = 90
+
+    def __init__(self,
+                 motor: Motor,
+                 detector: CubeDetector,
+                 speed: int = 800):
+        self.__motor = motor
+        self.__detector = detector
+        self.__speed = speed
+
+    def calibrate_dynamically(self):
+        print("calibrating turntable ...")
+        best_error = 10 ** 9
+        best_pos = 0
+
+        # 1) go to initial reference
+        self.__motor.run_target(self.__speed,
+                                self.__INITIAL_PHYSICAL_ANGLE_OFFSET)
+
+        for pos in range(3):
+            error = self.__detector.alignment_error()
+
+            print(f"cube alignment error at position {pos}: {error}")
+            if error < best_error:
+                best_error = error
+                best_pos = pos
+
+            # only move for the first two positions
+            if pos < 2:
+                self.__motor.run_angle(self.__speed,
+                                       self.__CALIBRATION_INCREMENT)
+
+        # rotate to best alignment
+        print(f"best alignment at position {best_pos}")
+        turn_times = ((best_pos + 2) % 3) - 1
+        self.__motor.run_angle(self.__speed,
+                               self.__CALIBRATION_INCREMENT * turn_times)
+        print("calibrating turntable done")
+
+    def turn(self,
+             direction: int,
+             amount: float = TurnAmount.QUARTER,
+             wait_for_turn: bool = True) -> None:
+        self.__motor.run_angle(self.__speed,
+                               int(direction * amount * self.__ANGLE_PER_AMOUNT),
+                               wait=wait_for_turn)
+
+    def reset_angle(self) -> None:
+        self.__motor.reset_angle(0)
+
+    def done(self) -> bool:
+        return self.__motor.done()
