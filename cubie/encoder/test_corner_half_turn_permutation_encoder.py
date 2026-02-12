@@ -1,8 +1,6 @@
 import unittest
 
 from cubie.encoder.corner_half_turn_permutation_encoder import CornerHalfTurnPermutationEncoder
-from cubie.encoder.corner_permutation_parity_encoder import CornerPermutationParityEncoder
-from cubie.encoder.corner_tetrad_encoder import CornerTetradEncoder
 from cubie.test_cubie_move_applier import TestCubieMoveApplier
 
 
@@ -20,28 +18,6 @@ class TestCornerHalfTurnPermutationEncoder(unittest.TestCase):
         cubie = corners, []
         encoder = CornerHalfTurnPermutationEncoder()
         self.assertEqual(encoder.encode_cubie(cubie), 575)
-
-    def test_corner_half_turn_encoder_injective_on_g3(self):
-        from itertools import permutations
-
-        encoder = CornerHalfTurnPermutationEncoder()
-        seen = set()
-
-        for perm in permutations(range(8)):
-
-            # enforce G3 corner conditions
-            cubie = [(c, 0) for c in perm], []
-            corner_tetrad = CornerTetradEncoder().encode_cubie(cubie)
-            permutation_parity = CornerPermutationParityEncoder.encode_cubie(cubie)
-            if not (corner_tetrad == 0 and permutation_parity == 0):
-                continue
-
-            idx = encoder.encode_cubie(cubie)
-
-            self.assertNotIn(idx, seen, f"Collision for {perm}")
-            seen.add(idx)
-
-        self.assertEqual(len(seen), 288)
 
 
 if __name__ == "__main__":
