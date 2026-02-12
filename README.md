@@ -23,9 +23,9 @@ source venv/bin/activate  # macOS/Linux
 pip install -r requirements.txt
 ```
 
-### Execute on robot
+### Build and execute on robot
 ```shell
-pybricksdev run ble main.py
+python build.py
 ```
 
 ### Open tasks
@@ -36,7 +36,6 @@ pybricksdev run ble main.py
 - improve solution execution effectiveness
 - refactor for less code duplication and magic numbers
 - improve testing setup (run all tests)
-- streamline pruning table generation (resolve circular dependency on tables in generator)
 - add typehints everywhere
 - remove debugging prints
 - add building instructions
