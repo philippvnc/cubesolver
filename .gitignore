@@ -3,3 +3,5 @@ venv/
 env/
 ENV/
 .idea/
+__pycache__/
+generated/
