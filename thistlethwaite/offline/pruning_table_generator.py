@@ -12,7 +12,7 @@ from thistlethwaite.phase2.phase2 import Phase2
 from thistlethwaite.phase3.phase3 import Phase3
 from thistlethwaite.phase4.phase4 import Phase4
 
-if __name__ == '__main__':
+def main():
     eo_pruning = PruningTableCreator.create(2 ** 11, EdgeOrientationEncoder.from_cubie, Phase1.ALLOWED_MOVES)
     TableSaver.save_table(eo_pruning, "eo_pruning_table")
 
@@ -35,3 +35,6 @@ if __name__ == '__main__':
     ep_pruning = PruningTableCreator.create(pow(24, 3), EdgeHalfTurnPermutationEncoder().encode_cubie,
                                             Phase4.ALLOWED_MOVES)
     TableSaver.save_table(ep_pruning, "ep_pruning_table")
+
+if __name__ == "__main__":
+    main()

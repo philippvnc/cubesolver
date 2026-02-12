@@ -1,6 +1,4 @@
 from constants.move import Move
-from thistlethwaite.offline.generated.co_pruning_table import CO_PRUNING_TABLE
-from thistlethwaite.offline.generated.ud_pruning_table import UD_PRUNING_TABLE
 from cubie.encoder.corner_orientation_encoder import CornerOrientationEncoder
 from cubie.encoder.up_down_edge_slice_encoder import UpDownEdgeSliceEncoder
 
@@ -27,8 +25,10 @@ class Phase2:
 
     MAX_DEPTH = 10
 
-    def __init__(self):
+    def __init__(self, co_pruning_table: list[int], ud_pruning_table: list[int]):
         self.up_down_edge_slice_encoder = UpDownEdgeSliceEncoder()
+        self.__co_pruning_table = co_pruning_table
+        self.__ud_pruning_table = ud_pruning_table
 
     def phase_solved(self, cubie):
         return self.heuristic(cubie) == 0
@@ -36,5 +36,5 @@ class Phase2:
     def heuristic(self, cubie) -> int:
         co = CornerOrientationEncoder.from_cubie(cubie)
         ud = self.up_down_edge_slice_encoder.encode_cubie(cubie)
-        return max(CO_PRUNING_TABLE[co], UD_PRUNING_TABLE[ud])
+        return max(self.__co_pruning_table[co], self.__ud_pruning_table[ud])
 

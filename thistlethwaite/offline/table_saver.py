@@ -11,3 +11,4 @@ class TableSaver:
             for row in table:
                 f.write("    " + repr(row) + ",\n")
             f.write("]\n")
+        print(f"generated {file_name}")
