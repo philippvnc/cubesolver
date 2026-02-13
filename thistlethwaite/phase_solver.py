@@ -1,21 +1,22 @@
 from algorithm.ida_star import IDAStar
 from constants.move import Move
 from cubie.cubie_move_applier import CubieMoveApplier
+from thistlethwaite.phase import Phase
 
 '''
-A generic phase solver for thistlethwaite.
+A generic phase solver
 uses IDA* search
 '''
 class PhaseSolver:
 
     def __init__(self,
-                 phase):
-        self.ida_star = IDAStar(phase.ALLOWED_MOVES,
+                 phase : Phase):
+        self.ida_star = IDAStar(phase.allowed_moves,
                                 CubieMoveApplier.apply,
-                                phase.phase_solved,
+                                phase.solved,
                                 phase.heuristic,
                                 PhaseSolver.__move_pruning)
-        self.max_depth = phase.MAX_DEPTH
+        self.max_depth = phase.max_moves
 
     def solve(self,
               cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> list[int]:

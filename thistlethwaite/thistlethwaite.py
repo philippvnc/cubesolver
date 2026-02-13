@@ -10,6 +10,7 @@ from cubie.encoder.edge_orientation_encoder import EdgeOrientationEncoder
 from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncoder
 from cubie.encoder.up_down_edge_slice_encoder import UpDownEdgeSliceEncoder
 from thistlethwaite.heuristic import Heuristic
+from thistlethwaite.phase import Phase
 from thistlethwaite.phase1.phase1 import Phase1
 from thistlethwaite.phase2.phase2 import Phase2
 from thistlethwaite.phase3.phase3 import Phase3
@@ -19,9 +20,10 @@ from thistlethwaite.phase_solver import PhaseSolver
 '''
 Thistlethwaite cube solver, solves 4 phases iteratively and joins solutions.
 '''
-class Thistlethwaite:
 
-    __PHASES = [
+
+class Thistlethwaite:
+    __PHASES: list[Phase] = [
         Phase1(Heuristic().phase_1_heuristic),
         Phase2(Heuristic().phase_2_heuristic),
         Phase3(Heuristic().phase_3_heuristic),
@@ -40,13 +42,13 @@ class Thistlethwaite:
 
     @staticmethod
     def solve_phase(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]],
-                    phase) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
-        print(f"starting {phase.NAME} solve:")
+                    phase: Phase) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
+        print(f"starting {phase.name} solve:")
         solver = PhaseSolver(phase)
         solution = solver.solve(cubie)
         if solution is None:
             return None
-        print(f"found {phase.NAME} solution:")
+        print(f"found {phase.name} solution:")
         Move.print_moves(solution)
         cubie = CubieMoveApplier.apply_many(cubie, solution)
 

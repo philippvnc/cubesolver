@@ -26,14 +26,14 @@ class TestPhase1IDAStarSolver(unittest.TestCase):
 
     def test_solution_actually_solves_phase1(self):
         for scramble_len in range(1, 5):
-            cubie = TestCubieUtil.scrambled_cubie(Phase1.ALLOWED_MOVES, scramble_len)
+            cubie = TestCubieUtil.scrambled_cubie(Phase1().allowed_moves, scramble_len)
 
             solver = PhaseSolver(Phase1())
             solution = solver.solve(cubie)
 
             self.assertIsNotNone(solution)
             cubie = CubieMoveApplier.apply_many(cubie, solution)
-            self.assertEqual(Phase1().phase_solved(cubie), True)
+            self.assertEqual(Phase1().solved(cubie), True)
 
 
 if __name__ == '__main__':

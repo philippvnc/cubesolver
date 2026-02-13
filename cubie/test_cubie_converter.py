@@ -10,8 +10,7 @@ class TestCubieConverter(TestCase):
 
     @staticmethod
     def assert_conversion_passed(labels: list[int]):
-        conv = CubieConverter()
-        cubie = conv.convert_to_cubie(labels)
+        cubie = CubieConverter.convert_to_cubie(labels)
         assert cubie is not None, "cube rejected"
         return cubie[0], cubie[1]
 
