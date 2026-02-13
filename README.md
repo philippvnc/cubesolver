@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ### Run tests
 ```shell
-python -m unittest discover
+python -m unittest discover -v -b
 ```
 
 ### Build and execute on robot
@@ -40,8 +40,7 @@ python build.py
 - improve scan speed
 - improve solution execution effectiveness
 - refactor for less code duplication and magic numbers
-- improve testing setup (run all tests)
 - add typehints everywhere
-- remove debugging prints
+- replace debugging prints with logging
 - add building instructions
 
