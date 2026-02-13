@@ -11,14 +11,12 @@ class CubeSolver:
     def __init__(self,
                  cube_scanner: CubeScanner,
                  label_predictor: LabelPredictor,
-                 cubie_converter: CubieConverter,
                  solution_generator: SolutionGenerator,
                  solution_executor: SolutionExecutor,
                  feedback: Feedback,
                  max_retries: int = 2) -> None:
         self.cube_scanner = cube_scanner
         self.label_predictor = label_predictor
-        self.cubie_converter = cubie_converter
         self.solution_generator = solution_generator
         self.solution_executor = solution_executor
         self.max_retries = max_retries
@@ -42,7 +40,7 @@ class CubeSolver:
                 self.feedback.fail()
                 continue
 
-            cubie = self.cubie_converter.convert_to_cubie(labels)
+            cubie = CubieConverter.convert_to_cubie(labels)
             if not cubie:
                 self.feedback.fail()
                 continue

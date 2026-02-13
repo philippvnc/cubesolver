@@ -38,8 +38,7 @@ def main():
     label_predictor = LabelPredictor(k_means)
     solution_generator = SolutionGenerator()
     solution_executor = SolutionExecutor(manipulator, feedback)
-    cubie_converter = CubieConverter()
-    cube_solver = CubeSolver(scanner, label_predictor, cubie_converter, solution_generator, solution_executor, feedback)
+    cube_solver = CubeSolver(scanner, label_predictor, solution_generator, solution_executor, feedback)
 
     detector.wait_for_cube_inserted()
     turntable.calibrate_dynamically()
