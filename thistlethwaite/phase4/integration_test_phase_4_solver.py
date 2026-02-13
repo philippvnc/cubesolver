@@ -30,34 +30,35 @@ class IntegrationTestPhase4Solver(unittest.TestCase):
         self.assertLessEqual(len(solution), 1)
 
     def test_solution_actually_solves_phase4(self):
+        phase4 = Phase4()
         for scramble_len in range(1, 5):
-            cubie = TestCubieUtil.scrambled_cubie(Phase4.ALLOWED_MOVES, scramble_len)
+            cubie = TestCubieUtil.scrambled_cubie(phase4.allowed_moves, scramble_len)
 
-            solver = PhaseSolver(Phase4())
+            solver = PhaseSolver(phase4)
             solution = solver.solve(cubie)
 
             self.assertIsNotNone(solution)
 
             cubie = CubieMoveApplier.apply_many(cubie, solution)
 
-            self.assertEqual(Phase4().phase_solved(cubie), True)
+            self.assertEqual(phase4.solved(cubie), True)
 
 
     def test_phase4_moves_preserve_phase3_invariants(self):
         # START FROM A RANDOM G-3 STATE
-        cubie = TestCubieUtil.scrambled_cubie(Phase4.ALLOWED_MOVES, 100)
+        cubie = TestCubieUtil.scrambled_cubie(Phase4().allowed_moves, 100)
 
         # sanity check
-        self.assertEqual(Phase1().phase_solved(cubie), True)
-        self.assertEqual(Phase2().phase_solved(cubie), True)
-        self.assertEqual(Phase3().phase_solved(cubie), True)
+        self.assertEqual(Phase1().solved(cubie), True)
+        self.assertEqual(Phase2().solved(cubie), True)
+        self.assertEqual(Phase3().solved(cubie), True)
 
         # apply random phase-4 moves
-        for move in TestCubieUtil.random_moves(Phase4.ALLOWED_MOVES, 1000):
+        for move in TestCubieUtil.random_moves(Phase4().allowed_moves, 1000):
             cubie = CubieMoveApplier.apply(cubie, move)
             # invariants must hold
-            self.assertEqual(Phase1().phase_solved(cubie), True)
-            self.assertEqual(Phase2().phase_solved(cubie), True)
+            self.assertEqual(Phase1().solved(cubie), True)
+            self.assertEqual(Phase2().solved(cubie), True)
             # phase 3 is an exception because corner tetrad permutation parity == 0 is only enforced right after phase 3 solve.
             # after that both corner tetrad permutation parity can go from (0,0) to (1,1) on any half turn.
             # todo change that encoder to check for equal tetrad permutation parity instead of == 0.

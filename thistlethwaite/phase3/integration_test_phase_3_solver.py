@@ -29,32 +29,33 @@ class TestPhase3Solver(unittest.TestCase):
         self.assertLessEqual(len(solution), 1)
 
     def test_solution_actually_solves_phase3(self):
+        phase3 = Phase3()
         for scramble_len in range(1, 5):
-            cubie = TestCubieUtil.scrambled_cubie(Phase3.ALLOWED_MOVES, scramble_len)
+            cubie = TestCubieUtil.scrambled_cubie(phase3.allowed_moves, scramble_len)
 
-            solver = PhaseSolver(Phase3())
+            solver = PhaseSolver(phase3)
             solution = solver.solve(cubie)
 
             self.assertIsNotNone(solution)
 
             cubie = CubieMoveApplier.apply_many(cubie, solution)
 
-            self.assertEqual(Phase3().phase_solved(cubie), True)
+            self.assertEqual(phase3.solved(cubie), True)
 
     def test_phase3_moves_preserve_phase2_invariants(self):
         # START FROM A RANDOM G-2 STATE
-        cubie = TestCubieUtil.scrambled_cubie(Phase3.ALLOWED_MOVES, 100)
+        cubie = TestCubieUtil.scrambled_cubie(Phase3().allowed_moves, 100)
 
         # sanity check
-        self.assertEqual(Phase1().phase_solved(cubie), True)
-        self.assertEqual(Phase2().phase_solved(cubie), True)
+        self.assertEqual(Phase1().solved(cubie), True)
+        self.assertEqual(Phase2().solved(cubie), True)
 
         # apply random phase-3 moves
-        for move in TestCubieUtil.random_moves(Phase3.ALLOWED_MOVES, 1000):
+        for move in TestCubieUtil.random_moves(Phase3().allowed_moves, 1000):
             cubie = CubieMoveApplier.apply(cubie, move)
             # invariants must ALWAYS hold
-            self.assertEqual(Phase1().phase_solved(cubie), True)
-            self.assertEqual(Phase2().phase_solved(cubie), True)
+            self.assertEqual(Phase1().solved(cubie), True)
+            self.assertEqual(Phase2().solved(cubie), True)
 
 
 
