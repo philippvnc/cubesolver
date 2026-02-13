@@ -48,6 +48,8 @@ class Cubie:
         (Facelet.LOWER_RIGHT_CORNER, Facelet.LOWER_RIGHT_CORNER, Facelet.LOWER_LEFT_CORNER)
     ]
 
+    N_CORNER_ORIENTATIONS = 3
+
     # the identity of the 12 edges
     # assumptions:
     # starting with UP/DOWN face for top and bottom layer
@@ -110,3 +112,5 @@ class Cubie:
         (Facelet.RIGHT_EDGE, Facelet.LEFT_EDGE),
         (Facelet.LEFT_EDGE, Facelet.RIGHT_EDGE)
     ]
+
+    N_EDGE_ORIENTATIONS = 2
