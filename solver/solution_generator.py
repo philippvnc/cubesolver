@@ -3,8 +3,7 @@ from thistlethwaite.thistlethwaite import Thistlethwaite
 
 
 class SolutionGenerator:
-    def __init__(self):
-        pass
 
-    def generate_solution(self, cubie):
+    @staticmethod
+    def generate_solution(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> list[int]:
         return SolutionOptimizer.optimize_solution(Thistlethwaite.solve(cubie))

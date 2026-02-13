@@ -10,14 +10,10 @@ from solver.solution_generator import SolutionGenerator
 class CubeSolver:
     def __init__(self,
                  cube_scanner: CubeScanner,
-                 label_predictor: LabelPredictor,
-                 solution_generator: SolutionGenerator,
                  solution_executor: SolutionExecutor,
                  feedback: Feedback,
                  max_retries: int = 2) -> None:
         self.cube_scanner = cube_scanner
-        self.label_predictor = label_predictor
-        self.solution_generator = solution_generator
         self.solution_executor = solution_executor
         self.max_retries = max_retries
         self.feedback = feedback
@@ -35,7 +31,7 @@ class CubeSolver:
                 self.feedback.fail()
                 continue
 
-            labels = self.label_predictor.get_cube_labels(scan)
+            labels = LabelPredictor.get_cube_labels(scan)
             if not labels:
                 self.feedback.fail()
                 continue
@@ -49,7 +45,7 @@ class CubeSolver:
                 self.feedback.fail()
                 continue
 
-            solution = self.solution_generator.generate_solution(cubie)
+            solution = SolutionGenerator.generate_solution(cubie)
             if solution is None:
                 self.feedback.fail()
                 continue
