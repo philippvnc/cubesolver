@@ -22,22 +22,13 @@ class Phase3:
 
     MAX_DEPTH = 13
 
-    def __init__(self, lr_pruning_table: list[int], ct_pruning_table: list[int]):
+    def __init__(self, heuristic = lambda cubie : 0):
         self.left_right_edge_slice_encoder = LeftRightEdgeSliceEncoder()
         self.corner_tetrad_encoder = CornerTetradEncoder()
-        self.__lr_pruning_table = lr_pruning_table
-        self.__ct_pruning_table = ct_pruning_table
+        self.heuristic = heuristic
 
     def phase_solved(self, cubie):
-        return self.heuristic(cubie) == 0
-
-    def heuristic(self, cubie) -> int:
-        left_right_edge_slice = self.left_right_edge_slice_encoder.encode_cubie(cubie)
-        corner_tetrad = self.corner_tetrad_encoder.encode_cubie(cubie)
-        permutation_parity = CornerPermutationParityEncoder.encode_cubie(cubie)
-        corner_tetrad_permutation_parity = CornerTetradPermutationParityEncoder.encode_cubie(cubie)
-
-        return max(self.__lr_pruning_table[left_right_edge_slice],
-                   self.__ct_pruning_table[corner_tetrad],
-                   permutation_parity,
-                   corner_tetrad_permutation_parity)
+        return (self.left_right_edge_slice_encoder.encode_cubie(cubie) == 0 and
+                self.corner_tetrad_encoder.encode_cubie(cubie) == 0 and
+                CornerPermutationParityEncoder.encode_cubie(cubie) == 0 and
+                CornerTetradPermutationParityEncoder.encode_cubie(cubie) == 0)

@@ -1,14 +1,14 @@
 import unittest
 
 from cubie.encoder.corner_half_turn_permutation_encoder import CornerHalfTurnPermutationEncoder
-from cubie.test_cubie_move_applier import TestCubieMoveApplier
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestCornerHalfTurnPermutationEncoder(unittest.TestCase):
 
     def test_solved(self):
         """solved cube maps to corner half turn permutation of 0 (lowest value)"""
-        cubie = TestCubieMoveApplier.solved_cubie()
+        cubie = TestCubieUtil.solved_cubie()
         encoder = CornerHalfTurnPermutationEncoder()
         self.assertEqual(encoder.encode_cubie(cubie), 0)
 

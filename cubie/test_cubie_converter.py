@@ -2,8 +2,8 @@ import unittest
 from unittest import TestCase
 
 from constants.face import Face
-from cubie.test_cubie_asserter import CubieAsserter
 from cubie.cubie_converter import CubieConverter
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestCubieConverter(TestCase):
@@ -44,7 +44,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_U_clockwise_from_solved(actual)
+        TestCubieUtil.assert_U_clockwise_from_solved(actual)
 
     def test_up_face_turned_once_counterclockwise(self):
         # solved cube with an Up Face counterclockwise turn
@@ -57,7 +57,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_U_counterclockwise_from_solved(actual)
+        TestCubieUtil.assert_U_counterclockwise_from_solved(actual)
 
     def test_front_face_turned_once_clockwise(self):
         # solved cube with a Front face clockwise turn
@@ -70,7 +70,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_F_clockwise_from_solved(actual)
+        TestCubieUtil.assert_F_clockwise_from_solved(actual)
 
     def test_front_face_turned_once_counterclockwise(self):
         # solved cube with a Front face counterclockwise turn
@@ -83,7 +83,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_F_counterclockwise_from_solved(actual)
+        TestCubieUtil.assert_F_counterclockwise_from_solved(actual)
 
     def test_right_face_turned_once_clockwise(self):
         # solved cube with a right face clockwise turn
@@ -96,7 +96,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_R_clockwise_from_solved(actual)
+        TestCubieUtil.assert_R_clockwise_from_solved(actual)
 
     def test_right_face_turned_once_counterclockwise(self):
         # solved cube with a right face counterclockwise turn
@@ -109,7 +109,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_R_counterclockwise_from_solved(actual)
+        TestCubieUtil.assert_R_counterclockwise_from_solved(actual)
 
     def test_left_face_turned_once_clockwise(self):
         # solved cube with a left face clockwise turn
@@ -122,7 +122,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_L_clockwise_from_solved(actual)
+        TestCubieUtil.assert_L_clockwise_from_solved(actual)
 
     def test_back_face_turned_once_clockwise(self):
         # solved cube with a back face clockwise turn
@@ -135,7 +135,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_B_clockwise_from_solved(actual)
+        TestCubieUtil.assert_B_clockwise_from_solved(actual)
 
     def test_down_face_turned_once_clockwise(self):
         # solved cube with a down face clockwise turn
@@ -148,7 +148,7 @@ class TestCubieConverter(TestCase):
 
         actual = self.assert_conversion_passed(labels)
 
-        CubieAsserter.assert_D_clockwise_from_solved(actual)
+        TestCubieUtil.assert_D_clockwise_from_solved(actual)
 
     def test_known_valid_scramble_labels(self):
         # LRR DUL BBD LUF LRU RRU DDF DFB BFU UDF FDB RLL DLR RLR BUL DFB BBU FFU

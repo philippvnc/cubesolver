@@ -3,7 +3,7 @@ import unittest
 from algorithm.group_encoder import GroupEncoder
 from constants.move import Move
 from cubie.cubie_move_applier import CubieMoveApplier
-from cubie.test_cubie_move_applier import TestCubieMoveApplier
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestCubieMoveApplierWithGroupEncoder(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestCubieMoveApplierWithGroupEncoder(unittest.TestCase):
     def test_swapping_two_edge_pieces_in_a_group_does_not_change_group_encoding(self):
         possible_edges = [e for e in range(12)]  # whole cube
         slice_edges = [0, 1]  # UR and UF
-        cubie = TestCubieMoveApplier.solved_cubie()
+        cubie = TestCubieUtil.solved_cubie()
 
         # initial encoding should be 0
         _, cubie_edges = cubie

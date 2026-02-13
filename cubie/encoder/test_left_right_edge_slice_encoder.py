@@ -1,14 +1,14 @@
 import unittest
 
 from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncoder
-from cubie.test_cubie_move_applier import TestCubieMoveApplier
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestLeftRightEdgeSliceEncoder(unittest.TestCase):
 
     def test_to_lr_edge_slice_solved(self):
         """solved cube maps to ud slice of 0 (lowest value)"""
-        cubie = TestCubieMoveApplier.solved_cubie()
+        cubie = TestCubieUtil.solved_cubie()
         mapper = LeftRightEdgeSliceEncoder()
         self.assertEqual(mapper.encode_cubie(cubie), 0)
 
