@@ -49,9 +49,7 @@ class TestLehmerPermutation(unittest.TestCase):
         permutation_list = list(permutations(range(4)))
         indexes = []
         for permutation in permutation_list:
-            print(f"permutation {permutation}")
             indexes.append(LehmerPermutation().encode(permutation))
-        print(f"indexes: {indexes}")
         self.assertEqual(len(set(indexes)), len(indexes))
 
 

@@ -16,14 +16,10 @@ class Phase4:
 
     MAX_DEPTH = 15
 
-    def __init__(self, cp_pruning_table: list[int], ep_pruning_table: list[int]):
-        self.__cp_pruning_table = cp_pruning_table
-        self.__ep_pruning_table = ep_pruning_table
+    def __init__(self, heuristic = lambda cubie: 0):
+        self.heuristic = heuristic
+        self.__cp_encoder = CornerHalfTurnPermutationEncoder()
+        self.__ep_encoder = EdgeHalfTurnPermutationEncoder()
 
     def phase_solved(self, cubie):
-        return self.heuristic(cubie) == 0
-
-    def heuristic(self, cubie) -> int:
-        cp = CornerHalfTurnPermutationEncoder().encode_cubie(cubie)
-        ep = EdgeHalfTurnPermutationEncoder().encode_cubie(cubie)
-        return max(self.__cp_pruning_table[cp], self.__ep_pruning_table[ep])
+        return self.__cp_encoder.encode_cubie(cubie) == 0 and self.__ep_encoder.encode_cubie(cubie) == 0

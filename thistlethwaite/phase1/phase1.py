@@ -27,12 +27,9 @@ class Phase1:
 
     MAX_DEPTH = 7
 
-    def __init__(self, eo_pruning_table: list[int]):
-        self.__eo_pruning_table = eo_pruning_table
+    def __init__(self, heuristic = lambda cubie : 0):
+        self.heuristic = heuristic
 
     def phase_solved(self, cubie):
-        return self.heuristic(cubie) == 0
+        return EdgeOrientationEncoder.from_cubie(cubie) == 0
 
-    def heuristic(self, cubie) -> int:
-        eo = EdgeOrientationEncoder.from_cubie(cubie)
-        return self.__eo_pruning_table[eo]

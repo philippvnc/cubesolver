@@ -1,14 +1,14 @@
 import unittest
 
 from cubie.encoder.corner_tetrad_encoder import CornerTetradEncoder
-from cubie.test_cubie_move_applier import TestCubieMoveApplier
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestCornerTetradEncoder(unittest.TestCase):
 
     def test_to_corner_tetrad_solved(self):
         """solved cube maps to corner tetrad of 0 (lowest value)"""
-        cubie = TestCubieMoveApplier.solved_cubie()
+        cubie = TestCubieUtil.solved_cubie()
         encoder = CornerTetradEncoder()
         self.assertEqual(encoder.encode_cubie(cubie), 0)
 

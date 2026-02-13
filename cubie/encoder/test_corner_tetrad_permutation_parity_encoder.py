@@ -1,13 +1,13 @@
 import unittest
 
 from cubie.encoder.corner_tetrad_permutation_parity_encoder import CornerTetradPermutationParityEncoder
-from cubie.test_cubie_move_applier import TestCubieMoveApplier
+from cubie.test_cubie_util import TestCubieUtil
 
 
 class TestCornerTetradParityEncoder(unittest.TestCase):
 
     def test_solved_cubie_even_parity(self):
-        cubie = TestCubieMoveApplier.solved_cubie()
+        cubie = TestCubieUtil.solved_cubie()
         self.assertEqual(CornerTetradPermutationParityEncoder().encode_cubie(cubie), 0)
 
     def test_tetrad_a_swap_odd_parity(self):

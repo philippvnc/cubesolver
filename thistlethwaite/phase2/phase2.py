@@ -25,16 +25,10 @@ class Phase2:
 
     MAX_DEPTH = 10
 
-    def __init__(self, co_pruning_table: list[int], ud_pruning_table: list[int]):
+    def __init__(self, heuristic = lambda cubie: 0):
         self.up_down_edge_slice_encoder = UpDownEdgeSliceEncoder()
-        self.__co_pruning_table = co_pruning_table
-        self.__ud_pruning_table = ud_pruning_table
+        self.heuristic = heuristic
 
     def phase_solved(self, cubie):
-        return self.heuristic(cubie) == 0
-
-    def heuristic(self, cubie) -> int:
-        co = CornerOrientationEncoder.from_cubie(cubie)
-        ud = self.up_down_edge_slice_encoder.encode_cubie(cubie)
-        return max(self.__co_pruning_table[co], self.__ud_pruning_table[ud])
+        return CornerOrientationEncoder.from_cubie(cubie) == 0 and self.up_down_edge_slice_encoder.encode_cubie(cubie) == 0
 

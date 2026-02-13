@@ -10,7 +10,7 @@ Then follow these steps.
 
 ### Create virtual environment
 ```shell
-python -m venv venv
+python -m venv .venv
 ```
 
 ### Activate virtual environment
@@ -21,6 +21,11 @@ source venv/bin/activate  # macOS/Linux
 ### Install dependencies
 ```shell
 pip install -r requirements.txt
+```
+
+### Run tests
+```shell
+python -m unittest discover
 ```
 
 ### Build and execute on robot

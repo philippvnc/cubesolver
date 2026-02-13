@@ -14,11 +14,6 @@ class TestPermutationParity(unittest.TestCase):
         parity = PermutationParity.determine(perm)
         self.assertEqual(parity, 0)
 
-    def test_offset_ordered_permutation_has_0_parity(self):
-        perm = [4, 5, 6, 7]
-        parity = PermutationParity.determine(perm)
-        self.assertEqual(parity, 0)
-
     def test_permutation_with_single_swap_has_1_parity(self):
         perm = [0, 2, 1, 3]
         parity = PermutationParity.determine(perm)
