@@ -35,14 +35,14 @@ class Thistlethwaite:
         solution: list[int] = []
 
         for phase in Thistlethwaite.__PHASES:
-            cubie, phase_solution = Thistlethwaite.solve_phase(cubie, phase)
+            cubie, phase_solution = Thistlethwaite.__solve_phase(cubie, phase)
             solution.extend(phase_solution)
 
         return solution
 
     @staticmethod
-    def solve_phase(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]],
-                    phase: Phase) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
+    def __solve_phase(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]],
+                      phase: Phase) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
         print(f"starting {phase.name} solve:")
         solver = PhaseSolver(phase)
         solution = solver.solve(cubie)

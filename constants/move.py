@@ -18,6 +18,8 @@ class Move:
     B2 = 16
     B_ = 17
 
+    ALL_MOVES = [U, U2, U_, R, R2, R_, F, F2, F_, D, D2, D_, L, L2, L_, B, B2, B_]
+
     @staticmethod
     def print_moves(moves: list[int]) -> None:
         for move in moves:

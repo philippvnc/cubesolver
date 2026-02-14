@@ -24,9 +24,9 @@ class TestCubieUtil:
         return scramble
 
     @staticmethod
-    def scrambled_cubie(allowed_moves: list[int], length: int):
+    def scrambled_cubie(allowed_moves: list[int], n_moves: int):
         cubie = TestCubieUtil.solved_cubie()
-        scramble = TestCubieUtil.random_moves(allowed_moves, length)
+        scramble = TestCubieUtil.random_moves(allowed_moves, n_moves)
         return CubieMoveApplier.apply_many(cubie, scramble)
 
     @staticmethod
