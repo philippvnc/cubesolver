@@ -55,8 +55,8 @@ class IDAStar:
             result = self.__search(node, 0, bound, -1, path)
 
             if result is True:
+                print(f"nodes visited: {self.visited}")
                 return list(reversed(path))
 
             bound = result
-
         return None
