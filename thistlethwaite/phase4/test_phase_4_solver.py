@@ -6,6 +6,7 @@ from cubie.encoder.corner_permutation_parity_encoder import CornerPermutationPar
 from cubie.encoder.corner_tetrad_encoder import CornerTetradEncoder
 from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncoder
 from cubie.test_cubie_util import TestCubieUtil
+from thistlethwaite.heuristic import Heuristic
 from thistlethwaite.phase1.phase1 import Phase1
 from thistlethwaite.phase2.phase2 import Phase2
 from thistlethwaite.phase4.phase4 import Phase4
@@ -43,8 +44,8 @@ class TestPhase4Solver(unittest.TestCase):
         self.assertLessEqual(len(solution), 1)
 
     def test_solution_actually_solves_phase4(self):
-        phase4 = Phase4()
-        for scramble_len in range(1, 5):
+        phase4 = Phase4(Heuristic().phase_4_heuristic)
+        for scramble_len in range(1, 1000):
             cubie = TestCubieUtil.scrambled_cubie(phase4.allowed_moves, scramble_len)
 
             solver = PhaseSolver(phase4)
