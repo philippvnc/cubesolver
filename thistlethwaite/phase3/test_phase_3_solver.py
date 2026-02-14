@@ -3,6 +3,7 @@ import unittest
 from constants.move import Move
 from cubie.cubie_move_applier import CubieMoveApplier
 from cubie.test_cubie_util import TestCubieUtil
+from thistlethwaite.heuristic import Heuristic
 from thistlethwaite.phase1.phase1 import Phase1
 from thistlethwaite.phase2.phase2 import Phase2
 from thistlethwaite.phase3.phase3 import Phase3
@@ -29,8 +30,8 @@ class TestPhase3Solver(unittest.TestCase):
         self.assertLessEqual(len(solution), 1)
 
     def test_solution_actually_solves_phase3(self):
-        phase3 = Phase3()
-        for scramble_len in range(1, 5):
+        phase3 = Phase3(Heuristic().phase_3_heuristic)
+        for scramble_len in range(1, 100):
             cubie = TestCubieUtil.scrambled_cubie(phase3.allowed_moves, scramble_len)
 
             solver = PhaseSolver(phase3)

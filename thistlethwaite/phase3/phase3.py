@@ -24,7 +24,7 @@ class Phase3(Phase):
                 Move.F2,
                 Move.B2,
             ],
-            13,
+            12,
             heuristic
         )
         self.left_right_edge_slice_encoder = LeftRightEdgeSliceEncoder()
