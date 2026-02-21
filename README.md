@@ -35,7 +35,6 @@ python build.py
 
 ### Open tasks
 
-- add solution generation progress feedback
 - improve scan speed
 - improve solution execution effectiveness
 - add typehints everywhere
