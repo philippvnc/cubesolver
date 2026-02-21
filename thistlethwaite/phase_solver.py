@@ -10,17 +10,19 @@ uses IDA* search
 class PhaseSolver:
 
     def __init__(self,
-                 phase : Phase):
+                 phase : Phase,
+                 show_progress):
         self.ida_star = IDAStar(phase.allowed_moves,
                                 CubieMoveApplier.apply,
                                 phase.solved,
                                 phase.heuristic,
                                 PhaseSolver.__move_pruning)
         self.max_depth = phase.max_moves
+        self.show_progress = show_progress
 
     def solve(self,
               cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> list[int]:
-        return self.ida_star.search(cubie, self.max_depth)
+        return self.ida_star.search(cubie, self.max_depth, self.show_progress)
 
     @staticmethod
     def __move_pruning(move: int,

@@ -13,7 +13,7 @@ class SolutionExecutor:
 
     def execute_solution(self, moves: list[int]) -> None:
         n_moves = len(moves)
-
+        self.feedback.show_process(0)
         for i, move in enumerate(moves, 1):
             command = SolutionExecutor.__translate_to_command(move)
             if command is None:
@@ -21,8 +21,7 @@ class SolutionExecutor:
             face, direction, amount = command
             self.manipulator.move_face_to_bottom(face)
             self.manipulator.turn_face(direction, amount)
-            percent = int((i * 100) / n_moves)
-            self.feedback.show_process(percent)
+            self.feedback.show_process((i * 100) // n_moves)
 
         self.manipulator.release_cube(False)
         self.feedback.solved()
