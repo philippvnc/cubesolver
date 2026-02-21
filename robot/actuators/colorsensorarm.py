@@ -6,11 +6,11 @@ from constants.scan_position import ScanPosition
 
 class ColorSensorArm:
     __SCAN_ANGLES = {
-        ScanPosition.CENTER: -110,
-        ScanPosition.EDGE: -78,
-        ScanPosition.CORNER: -63,
+        ScanPosition.CENTER: -121,
+        ScanPosition.EDGE: -94,
+        ScanPosition.CORNER: -80,
     }
-    __TUCK_AWAY_ANGLE = -5
+    __TUCK_AWAY_ANGLE = -40
 
     def __init__(self,
                  motor: Motor,
