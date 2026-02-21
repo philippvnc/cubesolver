@@ -98,6 +98,7 @@ class CubeScanner:
                     face: int) -> list[tuple[int, int, int]]:
         face_scan = [(0, 0, 0)] * 9
         self.__manipulator.move_face_to_top(face)
+        self.__manipulator.release_cube(wait=True)
         self.__reader.turn_on_lights()
         for facelet in self.__FACELET_SCAN_ORDER:
             face_scan[facelet] = self.__scan_facelet(facelet)

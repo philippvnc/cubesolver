@@ -7,6 +7,10 @@ class Arm:
     __FLIPPING_ANGLE = -133
     __RELEASING_ANGLE = -5
 
+    __RELEASED = 0
+    __HOLDING = 1
+    __FLIPPED = 2
+
     def __init__(self,
                  name: str,
                  motor: Motor,
@@ -17,6 +21,7 @@ class Arm:
         self.__speed = speed
         self.__calibration_speed = calibration_speed
         self.__calibrate()
+        self.__position = Arm.__RELEASED
 
     def __calibrate(self) -> None:
         print("calibrating " + self.name + " ...")
@@ -28,14 +33,18 @@ class Arm:
     def release(self,
                 wait: bool = False) -> None:
         self.__motor.run_target(self.__speed, self.__RELEASING_ANGLE, wait=wait, then=Stop.COAST)
+        self.__position = Arm.__RELEASED
 
     def hold(self,
              wait: bool = False) -> None:
         self.__motor.run_target(self.__speed, self.__HOLDING_ANGLE, wait=wait, then=Stop.COAST)
+        self.__position = Arm.__HOLDING
 
     def flip(self) -> None:
+        if self.__position == Arm.__FLIPPED:
+            self.release()
         self.__motor.run_target(self.__speed, self.__FLIPPING_ANGLE)
-        self.release(wait=True)
+        self.__position = Arm.__FLIPPED
 
     def done(self) -> bool:
         return self.__motor.done()
