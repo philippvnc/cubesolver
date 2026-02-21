@@ -9,6 +9,7 @@ class CubeDetector:
     __ABSENCE_THRESHOLD: int = 100
     __NUMBER_OF_PRESENCE_READINGS: int = 30
     __TOLERANCE: int = 2
+    __MEASUREMENT_INTERVAL_MILLIS: int = 50
 
     def __init__(self,
                  sensor: UltrasonicSensor,
@@ -24,25 +25,31 @@ class CubeDetector:
         self.__feedback.cube_missing()
         print("Waiting for cube to be inserted")
         distances = [self.__PRESENCE_THRESHOLD] * self.__NUMBER_OF_PRESENCE_READINGS
-        i = 0
+        reading = 0
         # wait until movement has settled for a second below presence threshold
         while True:
-            distances[i] = self.__sensor.distance()
-            i = (i + 1) % len(distances)
-            if (
-                    max(distances) - min(distances) <= self.__TOLERANCE
-                    and min(distances) < self.__PRESENCE_THRESHOLD
-            ):
+            distances[reading] = self.__sensor.distance()
+            reading = (reading + 1) % self.__NUMBER_OF_PRESENCE_READINGS
+            if self.__is_distance_stable(distances) and self.__is_cube_present(distances):
                 break
-            wait(50)
+            self.__wait_measurement_interval()
         self.__sensor.lights.on(0)
         self.__feedback.cube_present()
         print("Cube is inserted")
+
+    def __wait_measurement_interval(self):
+        wait(self.__MEASUREMENT_INTERVAL_MILLIS)
+
+    def __is_cube_present(self, distances: list[int]) -> bool:
+        return min(distances) < self.__PRESENCE_THRESHOLD
+
+    def __is_distance_stable(self, distances: list[int]) -> bool:
+        return max(distances) - min(distances) <= self.__TOLERANCE
 
     def wait_for_cube_removed(self) -> None:
         print("Waiting for cube to be removed")
         self.__feedback.cube_present()
         while self.__sensor.distance() < self.__ABSENCE_THRESHOLD:
-            wait(50)
+            self.__wait_measurement_interval()
         self.__feedback.cube_missing()
         print("Cube is removed")
