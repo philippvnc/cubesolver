@@ -5,7 +5,7 @@ from robot.output.feedback import Feedback
 
 
 class CubeDetector:
-    __PRESENCE_THRESHOLD: int = 120
+    __PRESENCE_THRESHOLD: int = 75
     __ABSENCE_THRESHOLD: int = 100
     __NUMBER_OF_PRESENCE_READINGS: int = 30
     __TOLERANCE: int = 2
