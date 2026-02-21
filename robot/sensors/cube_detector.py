@@ -7,7 +7,6 @@ from robot.output.feedback import Feedback
 class CubeDetector:
     __PRESENCE_THRESHOLD: int = 85
     __ABSENCE_THRESHOLD: int = 100
-    __MAX_SENSOR_VALUE: int = 2000
     __NUMBER_OF_PRESENCE_READINGS: int = 30
     __TOLERANCE: int = 2
     __MEASUREMENT_INTERVAL_MILLIS: int = 50
@@ -42,7 +41,7 @@ class CubeDetector:
         wait(self.__MEASUREMENT_INTERVAL_MILLIS)
 
     def __is_cube_present(self, distances: list[int]) -> bool:
-        return min(distances) < self.__PRESENCE_THRESHOLD or min(distances) == self.__MAX_SENSOR_VALUE
+        return min(distances) < self.__PRESENCE_THRESHOLD
 
     def __is_distance_stable(self, distances: list[int]) -> bool:
         return max(distances) - min(distances) <= self.__TOLERANCE
