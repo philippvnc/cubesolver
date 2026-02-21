@@ -7,8 +7,8 @@ from constants.scan_position import ScanPosition
 class ColorSensorArm:
     __SCAN_ANGLES = {
         ScanPosition.CENTER: -88,
-        ScanPosition.EDGE: -57,
-        ScanPosition.CORNER: -43,
+        ScanPosition.EDGE: -58,
+        ScanPosition.CORNER: -45,
     }
     __TUCK_AWAY_ANGLE = -5
 
