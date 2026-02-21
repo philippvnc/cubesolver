@@ -44,13 +44,13 @@ class IDAStar:
 
         return min_excess
 
-    def search(self, node, max_depth=20):
+    def search(self, node, max_depth=20, show_progress=lambda i: print(f"progress: {i}")):
         print("starting search with IDA*")
         self.visited = 0
         bound = self.heuristic(node)
 
         while bound <= max_depth:
-            print(f"bound: {bound}")
+            show_progress((bound * 100) // max_depth)
             path = []
             result = self.__search(node, 0, bound, -1, path)
 

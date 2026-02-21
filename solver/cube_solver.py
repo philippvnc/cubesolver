@@ -45,7 +45,7 @@ class CubeSolver:
                 self.feedback.fail()
                 continue
 
-            solution = SolutionGenerator.generate_solution(cubie)
+            solution = SolutionGenerator.generate_solution(cubie, self.feedback.show_process)
             if solution is None:
                 self.feedback.fail()
                 continue
