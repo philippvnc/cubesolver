@@ -11,14 +11,14 @@ class ColorReader:
         self.__feedback = feedback
         self.turn_off_lights()
 
-    def read(self) -> tuple[int, int, int]:
-        color = self.__sensor.hsv()
+    async def read(self) -> tuple[int, int, int]:
+        color = await self.__sensor.hsv()
         self.__feedback.show_color(color)
         return color.h, color.s, color.v
 
-    def turn_off_lights(self):
-        self.__sensor.lights.off()
+    async def turn_off_lights(self):
+        await self.__sensor.lights.off()
         self.__feedback.show_color(None)
 
-    def turn_on_lights(self):
-        self.__sensor.lights.on((self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY))
+    async def turn_on_lights(self):
+        await self.__sensor.lights.on((self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY))

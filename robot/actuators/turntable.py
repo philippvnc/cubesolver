@@ -18,17 +18,17 @@ class Turntable:
         self.__detector = detector
         self.__speed = speed
 
-    def calibrate_dynamically(self):
+    async def calibrate_dynamically(self):
         print("calibrating turntable ...")
         best_error = 10 ** 9
         best_pos = 0
 
         # 1) go to initial reference
-        self.__motor.run_target(self.__speed,
-                                self.__INITIAL_PHYSICAL_ANGLE_OFFSET)
+        await self.__motor.run_target(self.__speed,
+                                      self.__INITIAL_PHYSICAL_ANGLE_OFFSET)
 
         for pos in range(3):
-            error = self.__detector.alignment_error()
+            error = await self.__detector.alignment_error()
 
             print(f"cube alignment error at position {pos}: {error}")
             if error < best_error:
@@ -37,26 +37,20 @@ class Turntable:
 
             # only move for the first two positions
             if pos < 2:
-                self.__motor.run_angle(self.__speed,
-                                       self.__CALIBRATION_INCREMENT)
+                await self.__motor.run_angle(self.__speed,
+                                             self.__CALIBRATION_INCREMENT)
 
         # rotate to best alignment
         print(f"best alignment at position {best_pos}")
         turn_times = ((best_pos + 2) % 3) - 1
-        self.__motor.run_angle(self.__speed,
-                               self.__CALIBRATION_INCREMENT * turn_times)
+        await self.__motor.run_angle(self.__speed,
+                                     self.__CALIBRATION_INCREMENT * turn_times)
         print("calibrating turntable done")
 
-    def turn(self,
-             direction: int,
-             amount: float = TurnAmount.QUARTER,
-             wait_for_turn: bool = True) -> None:
-        self.__motor.run_angle(self.__speed,
-                               int(direction * amount * self.__ANGLE_PER_AMOUNT),
-                               wait=wait_for_turn)
+    async def turn(self,
+                   direction: int,
+                   amount: float = TurnAmount.QUARTER) -> None:
+        await self.__motor.run_angle(self.__speed, int(direction * amount * self.__ANGLE_PER_AMOUNT), wait=True)
 
     def reset_angle(self) -> None:
         self.__motor.reset_angle(0)
-
-    def done(self) -> bool:
-        return self.__motor.done()

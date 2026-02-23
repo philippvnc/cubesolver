@@ -1,3 +1,5 @@
+from pybricks.tools import multitask
+
 from constants.direction import Direction
 from constants.face import Face
 from constants.move import Move
@@ -11,7 +13,7 @@ class SolutionExecutor:
         self.manipulator = manipulator
         self.feedback = feedback
 
-    def execute_solution(self, moves: list[int]) -> None:
+    async def execute_solution(self, moves: list[int]) -> None:
         n_moves = len(moves)
         self.feedback.show_process(0)
         for i, move in enumerate(moves, 1):
@@ -19,13 +21,10 @@ class SolutionExecutor:
             if command is None:
                 continue
             face, direction, amount = command
-            self.manipulator.move_face_to_bottom(face)
-            self.manipulator.turn_face(direction, amount)
+            await self.manipulator.move_face_to_bottom(face)
+            await self.manipulator.turn_face(direction, amount)
             self.feedback.show_process((i * 100) // n_moves)
-
-        self.manipulator.release_cube(False)
-        self.feedback.solved()
-
+        await multitask(self.manipulator.release_cube(), self.feedback.solved())
 
     @staticmethod
     def __translate_to_command(move: int) -> tuple[int, int, int] | None:

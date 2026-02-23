@@ -28,14 +28,9 @@ class ColorSensorArm:
         self.__motor.run_target(self.__calibration_speed, self.__TUCK_AWAY_ANGLE, then=Stop.COAST)
         print("calibrating color sensor arm done")
 
-    def tuck_away(self, wait: bool = True) -> None:
-        self.__motor.run_target(self.__speed, self.__TUCK_AWAY_ANGLE, wait=wait, then=Stop.COAST)
+    async def tuck_away(self) -> None:
+        await self.__motor.run_target(self.__speed, self.__TUCK_AWAY_ANGLE, wait=True, then=Stop.COAST)
 
-    def move_to_position(self,
-                         position: int,
-                         wait: bool = True) -> None:
-        self.__motor.run_target(self.__speed, self.__SCAN_ANGLES[position], wait=wait)
-
-    def done(self) -> bool:
-        return self.__motor.done()
-
+    async def move_to_position(self,
+                               position: int) -> None:
+        await self.__motor.run_target(self.__speed, self.__SCAN_ANGLES[position], wait=True)

@@ -1,11 +1,11 @@
-from pybricks.tools import wait
+from pybricks.tools import multitask
 
-from constants.scan_position import ScanPosition
-from robot.actuators.colorsensorarm import ColorSensorArm
-from robot.actuators.turntable import TurnAmount
 from constants.direction import Direction
 from constants.facelet import Facelet
 from constants.rotation import Rotation
+from constants.scan_position import ScanPosition
+from robot.actuators.colorsensorarm import ColorSensorArm
+from robot.actuators.turntable import TurnAmount
 from robot.output.feedback import Feedback
 from robot.sensors.color_reader import ColorReader
 from solver.cube_manipulator import CubeManipulator, Axis
@@ -79,7 +79,7 @@ class CubeScanner:
         self.__orientation_tracker = orientation_tracker
         self.__feedback = feedback
 
-    def scan(self) -> list[tuple[int, int, int]]:
+    async def scan(self) -> list[tuple[int, int, int]]:
         # scan each face and return in standard order
         # and return list of facelet color readouts as non-normalized hsv color space tuples.
         # the 2d map would look like this:
@@ -87,40 +87,37 @@ class CubeScanner:
         # L F R B
         #   D
         self.__orientation_tracker.reset()
-        self.__arm.tuck_away()
+        await self.__arm.tuck_away()
         cube_scan = []
         for face in range(6):
-            cube_scan.extend(self.__scan_face(face))
+            cube_scan.extend(await self.__scan_face(face))
+        await self.__manipulator.release_cube()
         print("cube scan: " + str(cube_scan))
         return cube_scan
 
-    def __scan_face(self,
+    async def __scan_face(self,
                     face: int) -> list[tuple[int, int, int]]:
         face_scan = [(0, 0, 0)] * 9
-        self.__manipulator.move_face_to_top(face)
-        self.__manipulator.release_cube(wait=True)
-        self.__reader.turn_on_lights()
+        await self.__manipulator.move_face_to_top(face)
+        await self.__manipulator.release_cube()
+        await self.__reader.turn_on_lights()
         for facelet in self.__FACELET_SCAN_ORDER:
-            face_scan[facelet] = self.__scan_facelet(facelet)
-        self.__arm.tuck_away(wait=False)
-        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
-                                     direction=Direction.COUNTERCLOCKWISE,
-                                     amount=TurnAmount.EIGHTH,
-                                     wait_for_turn=False)
-        self.__wait_for_arm_and_manipulator_done()
-        self.__reader.turn_off_lights()
+            face_scan[facelet] = await self.__scan_facelet(facelet)
+        await multitask(self.__arm.tuck_away(),
+                        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
+                                                     direction=Direction.COUNTERCLOCKWISE,
+                                                     amount=TurnAmount.EIGHTH))
+        await self.__reader.turn_off_lights()
         self.__feedback.deactivate_facelets()
         return self.__correct_face_rotation(face, face_scan)
 
-    def __scan_facelet(self,
+    async def __scan_facelet(self,
                        facelet: int) -> tuple[int, int, int]:
-        self.__arm.move_to_position(self.__FACELET_SCAN_POSITIONS[facelet], wait=False)
-        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
-                                     direction=Direction.COUNTERCLOCKWISE,
-                                     amount=self.__FACELET_SCAN_ROTATION_OFFSET[facelet],
-                                     wait_for_turn=False)
-        self.__wait_for_arm_and_manipulator_done()
-        color = self.__reader.read()
+        await multitask(self.__arm.move_to_position(self.__FACELET_SCAN_POSITIONS[facelet]),
+                        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
+                                                     direction=Direction.COUNTERCLOCKWISE,
+                                                     amount=self.__FACELET_SCAN_ROTATION_OFFSET[facelet]))
+        color = await self.__reader.read()
         self.__feedback.activate_facelet(facelet)
         return color
 
@@ -140,10 +137,3 @@ class CubeScanner:
         for facelet in range(9):
             rotated_scan[self.__FACELET_COUNTERCLOCKWISE_ROTATION_MAP[facelet]] = face_scan[facelet]
         return rotated_scan
-
-    def __arm_and_manipulator_done(self) -> bool:
-        return self.__arm.done() and self.__manipulator.done()
-
-    def __wait_for_arm_and_manipulator_done(self) -> None:
-        while not self.__arm_and_manipulator_done():
-            wait(5)
