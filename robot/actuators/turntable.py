@@ -1,6 +1,5 @@
 from pybricks.pupdevices import Motor
 
-from constants.turn_amount import TurnAmount
 from robot.sensors.cube_detector import CubeDetector
 
 
@@ -13,10 +12,12 @@ class Turntable:
     def __init__(self,
                  motor: Motor,
                  detector: CubeDetector,
-                 speed: int = 800):
+                 speed: int = 800,
+                 slow_speed: int = 140) -> None:
         self.__motor = motor
         self.__detector = detector
         self.__speed = speed
+        self.__slow_speed = slow_speed
 
     async def calibrate_dynamically(self):
         print("calibrating turntable ...")
@@ -49,8 +50,22 @@ class Turntable:
 
     async def turn(self,
                    direction: int,
-                   amount: float = TurnAmount.QUARTER) -> None:
-        await self.__motor.run_angle(self.__speed, int(direction * amount * self.__ANGLE_PER_AMOUNT), wait=True)
+                   amount: int) -> None:
+        await self.__turn(direction, amount, self.__speed)
+
+    async def turn_slowly(self,
+                   direction: int,
+                   amount: int) -> None:
+        await self.__turn(direction, amount, self.__slow_speed)
+
+    async def __turn(self,
+                   direction: int,
+                   amount: int,
+                   speed: int) -> None:
+        await self.__motor.run_angle(speed, direction * amount * self.__ANGLE_PER_AMOUNT, wait=True)
+
+    def current_angle(self) -> int:
+        return self.__motor.angle()
 
     def reset_angle(self) -> None:
         self.__motor.reset_angle(0)

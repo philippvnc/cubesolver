@@ -4,8 +4,9 @@ from pybricks.tools import multitask
 from constants.axis import Axis
 from constants.direction import Direction
 from constants.face import Face
+from constants.turn_amount import TurnAmount
 from robot.actuators.arm import Arm
-from robot.actuators.turntable import Turntable, TurnAmount
+from robot.actuators.turntable import Turntable
 from solver.orientation_tracker import OrientationTracker
 
 
@@ -16,7 +17,7 @@ class CubeManipulator:
                  left_arm: Arm,
                  right_arm: Arm,
                  orientation_tracker: OrientationTracker):
-        self.__turntable = turntable
+        self.turntable = turntable
         self.__left_arm = left_arm
         self.__right_arm = right_arm
         self.__arms = [left_arm, right_arm]
@@ -45,19 +46,16 @@ class CubeManipulator:
     async def turn_cube(self,
                         axis: int,
                         direction: int,
-                        amount: float = TurnAmount.QUARTER) -> None:
+                        amount: int = TurnAmount.QUARTER) -> None:
         if amount == TurnAmount.NONE:
             return
-        # self.__print_move(axis, direction, int(amount))
-        # can only track full moves (even amounts of quarter turns)
-        if not amount == TurnAmount.EIGHTH and not amount == TurnAmount.NONE:
-            self.__orientation_tracker.track_turn(axis, direction, int(amount))
+        self.__orientation_tracker.track_turn(axis, direction, amount)
         if axis == Axis.VERTICAL:
             await self.release_cube()
-            await self.__turntable.turn(direction, amount)
+            await self.turntable.turn(direction, amount)
         elif axis == Axis.HORIZONTAL:
             (flipping_arm, inactive_arm) = self.__get_arms(direction)
-            for _ in range(int(amount)):
+            for _ in range(amount):
                 await self.__turn_cube_horizontally(flipping_arm, inactive_arm)
 
     async def turn_face(self,
@@ -66,9 +64,9 @@ class CubeManipulator:
         await self.__hold_cube()
         flipped_arms = self.__get_arms_in_position(Arm.FLIPPED)
         if len(flipped_arms) == 1:
-            await multitask(flipped_arms[0].release(), self.__turntable.turn(-direction, amount))
+            await multitask(flipped_arms[0].release(), self.turntable.turn(-direction, amount))
         else:
-            await self.__turntable.turn(-direction, amount)
+            await self.turntable.turn(-direction, amount)
 
     async def release_cube(self) -> None:
         await multitask(self.__left_arm.release(), self.__right_arm.release())

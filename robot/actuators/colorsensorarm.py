@@ -14,7 +14,7 @@ class ColorSensorArm:
 
     def __init__(self,
                  motor: Motor,
-                 speed: int = 600,
+                 speed: int = 1000,
                  calibration_speed: int = 400):
         self.__motor = motor
         self.__speed = speed
