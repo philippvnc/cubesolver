@@ -35,6 +35,10 @@ python build.py
 
 ### Open tasks
 
+- add more doc
+- optimize phase 2 in particular
+- refactor encoders
+- add a slight overturn to the turntable
 - add typehints everywhere
 - replace debugging prints with logging
 - add building instructions
