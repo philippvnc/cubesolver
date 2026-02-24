@@ -35,7 +35,6 @@ python build.py
 
 ### Open tasks
 
-- improve scan speed
 - add typehints everywhere
 - replace debugging prints with logging
 - add building instructions
