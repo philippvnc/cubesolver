@@ -1,6 +1,5 @@
 from pybricks.pupdevices import Motor
 
-from constants.turn_amount import TurnAmount
 from robot.sensors.cube_detector import CubeDetector
 
 
@@ -13,50 +12,61 @@ class Turntable:
     def __init__(self,
                  motor: Motor,
                  detector: CubeDetector,
-                 speed: int = 800):
+                 speed: int = 800,
+                 slow_speed: int = 140) -> None:
         self.__motor = motor
         self.__detector = detector
         self.__speed = speed
+        self.__slow_speed = slow_speed
 
-    def calibrate_dynamically(self):
+    async def calibrate_dynamically(self):
         print("calibrating turntable ...")
         best_error = 10 ** 9
         best_pos = 0
 
         # 1) go to initial reference
-        self.__motor.run_target(self.__speed,
-                                self.__INITIAL_PHYSICAL_ANGLE_OFFSET)
+        await self.__motor.run_target(self.__speed,
+                                      self.__INITIAL_PHYSICAL_ANGLE_OFFSET)
 
         for pos in range(3):
-            error = self.__detector.alignment_error()
+            error = await self.__detector.alignment_error()
 
-            print(f"cube alignment error at position {pos}: {error}")
+            if error == self.__detector.MINIMAL_ALIGNMENT_DISTANCE:
+                return
+
             if error < best_error:
                 best_error = error
                 best_pos = pos
 
             # only move for the first two positions
             if pos < 2:
-                self.__motor.run_angle(self.__speed,
-                                       self.__CALIBRATION_INCREMENT)
+                await self.__motor.run_angle(self.__speed,
+                                             self.__CALIBRATION_INCREMENT)
 
         # rotate to best alignment
-        print(f"best alignment at position {best_pos}")
         turn_times = ((best_pos + 2) % 3) - 1
-        self.__motor.run_angle(self.__speed,
-                               self.__CALIBRATION_INCREMENT * turn_times)
+        await self.__motor.run_angle(self.__speed,
+                                     self.__CALIBRATION_INCREMENT * turn_times)
         print("calibrating turntable done")
 
-    def turn(self,
-             direction: int,
-             amount: float = TurnAmount.QUARTER,
-             wait_for_turn: bool = True) -> None:
-        self.__motor.run_angle(self.__speed,
-                               int(direction * amount * self.__ANGLE_PER_AMOUNT),
-                               wait=wait_for_turn)
+    async def turn(self,
+                   direction: int,
+                   amount: int) -> None:
+        await self.__turn(direction, amount, self.__speed)
+
+    async def turn_slowly(self,
+                   direction: int,
+                   amount: int) -> None:
+        await self.__turn(direction, amount, self.__slow_speed)
+
+    async def __turn(self,
+                   direction: int,
+                   amount: int,
+                   speed: int) -> None:
+        await self.__motor.run_angle(speed, direction * amount * self.__ANGLE_PER_AMOUNT, wait=True)
+
+    def current_angle(self) -> int:
+        return self.__motor.angle()
 
     def reset_angle(self) -> None:
         self.__motor.reset_angle(0)
-
-    def done(self) -> bool:
-        return self.__motor.done()

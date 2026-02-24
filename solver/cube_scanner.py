@@ -1,19 +1,31 @@
-from pybricks.tools import wait
+from pybricks.tools import multitask, wait
 
-from constants.scan_position import ScanPosition
-from robot.actuators.colorsensorarm import ColorSensorArm
-from robot.actuators.turntable import TurnAmount
 from constants.direction import Direction
 from constants.facelet import Facelet
 from constants.rotation import Rotation
+from constants.scan_position import ScanPosition
+from constants.turn_amount import TurnAmount
+from robot.actuators.colorsensorarm import ColorSensorArm
 from robot.output.feedback import Feedback
 from robot.sensors.color_reader import ColorReader
-from solver.cube_manipulator import CubeManipulator, Axis
+from solver.cube_manipulator import CubeManipulator
 from solver.orientation_tracker import OrientationTracker
 
 
 class CubeScanner:
-    # initial rotation offset per face
+    # order and position of full face scan of all edge and corner pieces on a clockwise rotating cube.
+    # center is excluded
+    __MEASUREMENTS = [(Facelet.UPPER_LEFT_CORNER, ScanPosition.CORNER),
+                      (Facelet.LEFT_EDGE, ScanPosition.EDGE),
+                      (Facelet.LOWER_LEFT_CORNER, ScanPosition.CORNER),
+                      (Facelet.LOWER_EDGE, ScanPosition.EDGE),
+                      (Facelet.LOWER_RIGHT_CORNER, ScanPosition.CORNER),
+                      (Facelet.RIGHT_EDGE, ScanPosition.EDGE),
+                      (Facelet.UPPER_RIGHT_CORNER, ScanPosition.CORNER),
+                      (Facelet.UPPER_EDGE, ScanPosition.EDGE)]
+
+    # initial rotation offset per face.
+    # needed to account for faces rotating locally on their way to the scan position
     __FACE_ROTATION_OFFSET = [Rotation.UP,
                               Rotation.UP,
                               Rotation.RIGHT,
@@ -21,42 +33,7 @@ class CubeScanner:
                               Rotation.RIGHT,
                               Rotation.DOWN]
 
-    # faces get scanned in natural order but for less physical movement facelets get scanned in this particular order
-    # (start in the center facelet, then up, then move clockwise on the face)
-    __FACELET_SCAN_ORDER = [Facelet.CENTER,
-                            Facelet.UPPER_EDGE,
-                            Facelet.UPPER_RIGHT_CORNER,
-                            Facelet.RIGHT_EDGE,
-                            Facelet.LOWER_RIGHT_CORNER,
-                            Facelet.LOWER_EDGE,
-                            Facelet.LOWER_LEFT_CORNER,
-                            Facelet.LEFT_EDGE,
-                            Facelet.UPPER_LEFT_CORNER]
-
-    # the scan position for each facelet
-    __FACELET_SCAN_POSITIONS = [ScanPosition.CORNER,
-                                ScanPosition.EDGE,
-                                ScanPosition.CORNER,
-                                ScanPosition.EDGE,
-                                ScanPosition.CENTER,
-                                ScanPosition.EDGE,
-                                ScanPosition.CORNER,
-                                ScanPosition.EDGE,
-                                ScanPosition.CORNER]
-
-    # the relative amount of turn needed to scan each facelet
-    __FACELET_SCAN_ROTATION_OFFSET = [TurnAmount.EIGHTH,
-                                      TurnAmount.NONE,
-                                      TurnAmount.EIGHTH,
-                                      TurnAmount.EIGHTH,
-                                      TurnAmount.NONE,
-                                      TurnAmount.EIGHTH,
-                                      TurnAmount.EIGHTH,
-                                      TurnAmount.EIGHTH,
-                                      TurnAmount.EIGHTH]
-
     # where each facelet gets mapped when rotating the face counterclockwise
-    # needed to account for faces rotating locally on their way to the scan position
     __FACELET_COUNTERCLOCKWISE_ROTATION_MAP = [Facelet.LOWER_LEFT_CORNER,
                                                Facelet.LEFT_EDGE,
                                                Facelet.UPPER_LEFT_CORNER,
@@ -66,6 +43,8 @@ class CubeScanner:
                                                Facelet.LOWER_RIGHT_CORNER,
                                                Facelet.RIGHT_EDGE,
                                                Facelet.UPPER_RIGHT_CORNER]
+    __EIGHT_ANGLE = 45
+    __ANGLE_TOLERANCE = 1
 
     def __init__(self,
                  arm: ColorSensorArm,
@@ -79,7 +58,7 @@ class CubeScanner:
         self.__orientation_tracker = orientation_tracker
         self.__feedback = feedback
 
-    def scan(self) -> list[tuple[int, int, int]]:
+    async def scan(self) -> list[tuple[int, int, int]]:
         # scan each face and return in standard order
         # and return list of facelet color readouts as non-normalized hsv color space tuples.
         # the 2d map would look like this:
@@ -87,41 +66,52 @@ class CubeScanner:
         # L F R B
         #   D
         self.__orientation_tracker.reset()
-        self.__arm.tuck_away()
+        await self.__arm.tuck_away()
         cube_scan = []
         for face in range(6):
-            cube_scan.extend(self.__scan_face(face))
+            cube_scan.extend(await self.__scan_face(face))
+        await self.__manipulator.release_cube()
         print("cube scan: " + str(cube_scan))
         return cube_scan
 
-    def __scan_face(self,
-                    face: int) -> list[tuple[int, int, int]]:
-        face_scan = [(0, 0, 0)] * 9
-        self.__manipulator.move_face_to_top(face)
-        self.__reader.turn_on_lights()
-        for facelet in self.__FACELET_SCAN_ORDER:
-            face_scan[facelet] = self.__scan_facelet(facelet)
-        self.__arm.tuck_away(wait=False)
-        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
-                                     direction=Direction.COUNTERCLOCKWISE,
-                                     amount=TurnAmount.EIGHTH,
-                                     wait_for_turn=False)
-        self.__wait_for_arm_and_manipulator_done()
-        self.__reader.turn_off_lights()
+    async def __scan_face(self,
+                          face: int) -> list[tuple[int, int, int]]:
+        await self.__manipulator.move_face_to_top(face)
+        await self.__manipulator.release_cube()
+        await self.__arm.move_to_position(ScanPosition.CENTER)
+        await self.__reader.turn_on_lights()
+        center_scan = await self.__reader.read()
+        self.__feedback.activate_facelet(Facelet.CENTER)
+
+        neutral_angle = self.__manipulator.turntable.current_angle()
+        multi_task_result = await multitask(
+            self.__manipulator.turntable.turn_slowly(direction=Direction.CLOCKWISE, amount=TurnAmount.FULL),
+            self.__scan_turning_cube(neutral_angle))
+        _, face_scan = multi_task_result
+        face_scan[Facelet.CENTER] = center_scan
+        await self.__reader.turn_off_lights()
+        await self.__arm.tuck_away()
         self.__feedback.deactivate_facelets()
         return self.__correct_face_rotation(face, face_scan)
 
-    def __scan_facelet(self,
-                       facelet: int) -> tuple[int, int, int]:
-        self.__arm.move_to_position(self.__FACELET_SCAN_POSITIONS[facelet], wait=False)
-        self.__manipulator.turn_cube(axis=Axis.VERTICAL,
-                                     direction=Direction.COUNTERCLOCKWISE,
-                                     amount=self.__FACELET_SCAN_ROTATION_OFFSET[facelet],
-                                     wait_for_turn=False)
-        self.__wait_for_arm_and_manipulator_done()
-        color = self.__reader.read()
-        self.__feedback.activate_facelet(facelet)
-        return color
+    async def __scan_turning_cube(self, starting_angle: int) -> list[tuple[int, int, int]]:
+        face_scan = [(0, 0, 0)] * 9
+        for n_measurement, (facelet, scan_position) in enumerate(self.__MEASUREMENTS):
+            angle = await self.__get_measurement_angle(n_measurement, starting_angle)
+            multi_task_result = await multitask(self.__arm.move_to_position(scan_position),
+                                                self.__read_facelet_at_angle(angle))
+            _, facelet_scan = multi_task_result
+            face_scan[facelet] = facelet_scan
+            self.__feedback.activate_facelet(facelet)
+        return face_scan
+
+    async def __get_measurement_angle(self, i: int, starting_angle: int) -> int:
+        return starting_angle + ((i + 1) * self.__EIGHT_ANGLE)
+
+    async def __read_facelet_at_angle(self, target_angle: int) -> tuple[int, int, int]:
+        while self.__manipulator.turntable.current_angle() < target_angle - self.__ANGLE_TOLERANCE:
+            await wait(5)
+        return await self.__reader.read()
 
     def __correct_face_rotation(self,
                                 face: int,
@@ -139,10 +129,3 @@ class CubeScanner:
         for facelet in range(9):
             rotated_scan[self.__FACELET_COUNTERCLOCKWISE_ROTATION_MAP[facelet]] = face_scan[facelet]
         return rotated_scan
-
-    def __arm_and_manipulator_done(self) -> bool:
-        return self.__arm.done() and self.__manipulator.done()
-
-    def __wait_for_arm_and_manipulator_done(self) -> None:
-        while not self.__arm_and_manipulator_done():
-            wait(5)

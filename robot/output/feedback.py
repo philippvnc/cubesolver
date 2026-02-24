@@ -1,6 +1,6 @@
 from pybricks.hubs import InventorHub
-from pybricks.parameters import Color, Icon
-from pybricks.tools import Matrix, wait
+from pybricks.parameters import Color
+from pybricks.tools import Matrix
 
 from constants.facelet import Facelet
 
@@ -67,14 +67,14 @@ class Feedback:
 
         self.__display.icon(Matrix(pixels))
 
-    def success(self):
-        self.__speaker.play_notes(["G4/8", "C5/4"], 160)
+    async def success(self):
+        await self.__speaker.play_notes(["G4/8", "C5/4"], 160)
 
-    def solved(self):
-        self.__speaker.play_notes(["C5/8", "E5/8", "G5/4"], 160)
+    async def solved(self):
+        await self.__speaker.play_notes(["C5/8", "E5/8", "G5/4"], 160)
 
-    def fail(self):
-        self.__speaker.play_notes(["G3/8", "R/16", "G3/4"], 120)
+    async def fail(self):
+        await self.__speaker.play_notes(["G3/8", "R/16", "G3/4"], 120)
 
     def show_color(self, color: Color | None) -> None:
         if color is None:

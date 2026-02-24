@@ -26,19 +26,19 @@ class Robot:
         color_sensor_arm = ColorSensorArm(hardware.color_arm_motor)
         left_arm = Arm("left arm", hardware.left_arm_motor)
         right_arm = Arm("right arm", hardware.right_arm_motor)
-        turntable = Turntable(hardware.turntable_motor, self.__detector)
+        self.turntable = Turntable(hardware.turntable_motor, self.__detector)
         color_reader = ColorReader(hardware.color_sensor, feedback)
         orientation_tracker = OrientationTracker()
-        manipulator = CubeManipulator(turntable, left_arm, right_arm, orientation_tracker)
+        manipulator = CubeManipulator(self.turntable, left_arm, right_arm, orientation_tracker)
         scanner = CubeScanner(color_sensor_arm, color_reader, manipulator, orientation_tracker, feedback)
         solution_executor = SolutionExecutor(manipulator, feedback)
         self.__cube_solver = CubeSolver(scanner, solution_executor, feedback)
 
-        self.__detector.wait_for_cube_inserted()
-        turntable.calibrate_dynamically()
+    async def solve_cubes_forever(self):
+        await self.__detector.wait_for_cube_inserted()
+        await self.turntable.calibrate_dynamically()
 
-    def solve_cubes_forever(self):
         while True:
-            self.__cube_solver.solve_cube()
-            self.__detector.wait_for_cube_removed()
-            self.__detector.wait_for_cube_inserted()
+            await self.__cube_solver.solve_cube()
+            await self.__detector.wait_for_cube_removed()
+            await self.__detector.wait_for_cube_inserted()
