@@ -31,7 +31,9 @@ class Turntable:
         for pos in range(3):
             error = await self.__detector.alignment_error()
 
-            print(f"cube alignment error at position {pos}: {error}")
+            if error == self.__detector.MINIMAL_ALIGNMENT_DISTANCE:
+                return
+
             if error < best_error:
                 best_error = error
                 best_pos = pos
@@ -42,7 +44,6 @@ class Turntable:
                                              self.__CALIBRATION_INCREMENT)
 
         # rotate to best alignment
-        print(f"best alignment at position {best_pos}")
         turn_times = ((best_pos + 2) % 3) - 1
         await self.__motor.run_angle(self.__speed,
                                      self.__CALIBRATION_INCREMENT * turn_times)

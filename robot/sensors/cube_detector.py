@@ -5,6 +5,7 @@ from robot.output.feedback import Feedback
 
 
 class CubeDetector:
+    MINIMAL_ALIGNMENT_DISTANCE: int = 40
     __PRESENCE_THRESHOLD: int = 85
     __ABSENCE_THRESHOLD: int = 100
     __NUMBER_OF_PRESENCE_READINGS: int = 30
