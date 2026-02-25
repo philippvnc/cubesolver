@@ -39,7 +39,6 @@ python build.py
 - use const for constants
 - optimize phase 2 in particular
 - refactor encoders
-- add a slight overturn to the turntable
 - add typehints everywhere
 - replace debugging prints with logging
 - add building instructions
