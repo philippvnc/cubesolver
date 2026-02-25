@@ -15,7 +15,7 @@ class Turntable:
                  motor: Motor,
                  detector: CubeDetector,
                  speed: int = 800,
-                 slow_speed: int = 140) -> None:
+                 slow_speed: int = 135) -> None:
         self.__motor = motor
         self.__detector = detector
         self.__speed = speed
