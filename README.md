@@ -36,6 +36,7 @@ python build.py
 ### Open tasks
 
 - add more doc
+- use const for constants
 - optimize phase 2 in particular
 - refactor encoders
 - add a slight overturn to the turntable
