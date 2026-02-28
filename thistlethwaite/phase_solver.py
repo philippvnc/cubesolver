@@ -11,7 +11,7 @@ class PhaseSolver:
 
     def __init__(self,
                  phase : Phase,
-                 show_progress):
+                 show_progress=lambda i: print(f"progress: {i}")):
         self.ida_star = IDAStar(phase.allowed_moves,
                                 CubieMoveApplier.apply,
                                 phase.solved,

@@ -1,12 +1,13 @@
 from cubie.encoder.corner_orientation_encoder import CornerOrientationEncoder
 from cubie.encoder.edge_orientation_encoder import EdgeOrientationEncoder
+from cubie.encoder.phase_2_1_encoder import Phase21Encoder
+from cubie.encoder.phase_2_2_encoder import Phase22Encoder
 from cubie.encoder.phase_3_encoder import Phase3Encoder
 from cubie.encoder.phase_4_1_encoder import Phase41Encoder
 from cubie.encoder.phase_4_2_encoder import Phase42Encoder
 from cubie.encoder.phase_4_3_encoder import Phase43Encoder
 from cubie.encoder.phase_4_4_encoder import Phase44Encoder
 from cubie.encoder.phase_4_5_encoder import Phase45Encoder
-from cubie.encoder.up_down_edge_slice_encoder import UpDownEdgeSliceEncoder
 from thistlethwaite.offline.pruning_table_creator import PruningTableCreator
 from thistlethwaite.offline.table_saver import TableSaver
 from thistlethwaite.phase1.phase1 import Phase1
@@ -22,8 +23,11 @@ def main():
     co_pruning = PruningTableCreator.create(3 ** 7, CornerOrientationEncoder.from_cubie, Phase2().allowed_moves)
     TableSaver.save_table(co_pruning, "co_pruning_table")
 
-    ud_pruning = PruningTableCreator.create(495, UpDownEdgeSliceEncoder().encode_cubie, Phase2().allowed_moves)
-    TableSaver.save_table(ud_pruning, "ud_pruning_table")
+    phase_2_1_pruning = PruningTableCreator.create(13365, Phase21Encoder().encode, Phase2().allowed_moves)
+    TableSaver.save_table(phase_2_1_pruning, "phase_2_1_pruning")
+
+    phase_2_2_pruning = PruningTableCreator.create(13365, Phase22Encoder().encode, Phase2().allowed_moves)
+    TableSaver.save_table(phase_2_2_pruning, "phase_2_2_pruning")
 
     phase_3_pruning = PruningTableCreator.create(19600, Phase3Encoder().encode_cubie, Phase3().allowed_moves)
     TableSaver.save_table(phase_3_pruning, "phase_3_pruning_table")
