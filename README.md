@@ -37,7 +37,6 @@ python build.py
 
 - add more doc
 - use const for constants
-- optimize phase 2 in particular
 - refactor encoders
 - add typehints everywhere
 - replace debugging prints with logging
