@@ -61,7 +61,7 @@ class CubeManipulator:
     async def turn_face(self,
                         direction: int,
                         amount: int = TurnAmount.QUARTER) -> None:
-        await self.__hold_cube()
+        await self.hold_cube()
         flipped_arms = self.__get_arms_in_position(Arm.FLIPPED)
         if len(flipped_arms) == 1:
             await multitask(flipped_arms[0].release(), self.turntable.turn(-direction, amount, overturn=True))
@@ -71,7 +71,7 @@ class CubeManipulator:
     async def release_cube(self) -> None:
         await multitask(self.__left_arm.release(), self.__right_arm.release(), self.turntable.correct_overturn())
 
-    async def __hold_cube(self) -> None:
+    async def hold_cube(self) -> None:
         holder_arms = self.__get_arms_in_position(Arm.RELEASED)
         if len(holder_arms) == 1:
             await holder_arms[0].hold()

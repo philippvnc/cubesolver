@@ -44,7 +44,7 @@ class CubeScanner:
                                                Facelet.RIGHT_EDGE,
                                                Facelet.UPPER_RIGHT_CORNER]
     __EIGHT_ANGLE = 45
-    __ANGLE_TOLERANCE = 1
+    __ANGLE_TOLERANCE = 2
 
     def __init__(self,
                  arm: ColorSensorArm,
@@ -77,6 +77,7 @@ class CubeScanner:
     async def __scan_face(self,
                           face: int) -> list[tuple[int, int, int]]:
         await self.__manipulator.move_face_to_top(face)
+        await self.__manipulator.hold_cube()
         await self.__manipulator.release_cube()
         await self.__arm.move_to_position(ScanPosition.CENTER)
         await self.__reader.turn_on_lights()
