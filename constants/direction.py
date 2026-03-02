@@ -1,6 +1,9 @@
+from micropython_compat import const
+
+
 class Direction:
-    CLOCKWISE = 1
-    COUNTERCLOCKWISE = -1
+    CLOCKWISE = const(1)
+    COUNTERCLOCKWISE = const(-1)
 
     @staticmethod
     def name(direction: int) -> str:

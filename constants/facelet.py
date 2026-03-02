@@ -1,17 +1,20 @@
+from micropython_compat import const
+
+
 class Facelet:
     # facelets when looking straight at a face in local face space
     # 0 1 2
     # 3 4 5
     # 6 7 8
-    UPPER_LEFT_CORNER = 0
-    UPPER_EDGE = 1
-    UPPER_RIGHT_CORNER = 2
-    LEFT_EDGE = 3
-    CENTER = 4
-    RIGHT_EDGE = 5
-    LOWER_LEFT_CORNER = 6
-    LOWER_EDGE = 7
-    LOWER_RIGHT_CORNER = 8
+    UPPER_LEFT_CORNER = const(0)
+    UPPER_EDGE = const(1)
+    UPPER_RIGHT_CORNER = const(2)
+    LEFT_EDGE = const(3)
+    CENTER = const(4)
+    RIGHT_EDGE = const(5)
+    LOWER_LEFT_CORNER = const(6)
+    LOWER_EDGE = const(7)
+    LOWER_RIGHT_CORNER = const(8)
 
     @staticmethod
     def position(facelet: int) -> tuple[int, int] | None:

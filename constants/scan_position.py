@@ -1,4 +1,7 @@
+from micropython_compat import const
+
+
 class ScanPosition:
-    CENTER = 0
-    EDGE = 1
-    CORNER = 2
+    CENTER = const(0)
+    EDGE = const(1)
+    CORNER = const(2)

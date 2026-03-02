@@ -4,7 +4,6 @@ class CornerTetradPermutationParityEncoder:
     """
     Encodes the permutation parity of the first corner tetrad (TETRAD_A) only.
     """
-    TETRAD = [0, 2, 5, 7]
 
     @staticmethod
     def encode_corners(corners: list[tuple[int, int]]) -> int:
@@ -12,6 +11,7 @@ class CornerTetradPermutationParityEncoder:
         Compute the parity of the first tetrad of corners (indices 0..3 in positions).
         Normalizes corner IDs to 0..3 before computing parity.
         """
+        # todo this seems wrong, why not use actual tetrad?
         tetrad = corners[:4]  # first tetrad positions
         tetrad_ids = [c for c, _ in tetrad]
 

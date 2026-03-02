@@ -1,4 +1,6 @@
 from collections import deque
+
+from constants.cubie import Cubie
 from cubie.cubie_move_applier import CubieMoveApplier
 
 
@@ -8,10 +10,7 @@ class PruningTableCreator:
     def create(n_states: int, encode_cubie, allowed_moves: list[int]) -> list[int]:
         pruning = [-1] * n_states
 
-        solved_cubie = (
-            [(i, 0) for i in range(8)],
-            [(i, 0) for i in range(12)]
-        )
+        solved_cubie = Cubie.SOLVED
 
         start = encode_cubie(solved_cubie)
         pruning[start] = 0

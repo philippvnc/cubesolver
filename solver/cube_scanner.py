@@ -1,3 +1,4 @@
+from micropython_compat import const
 from pybricks.tools import multitask, wait
 
 from constants.direction import Direction
@@ -43,8 +44,8 @@ class CubeScanner:
                                                Facelet.LOWER_RIGHT_CORNER,
                                                Facelet.RIGHT_EDGE,
                                                Facelet.UPPER_RIGHT_CORNER]
-    __EIGHT_ANGLE = 45
-    __ANGLE_TOLERANCE = 2
+    __EIGHT_ANGLE = const(45)
+    __ANGLE_TOLERANCE = const(2)
 
     def __init__(self,
                  arm: ColorSensorArm,

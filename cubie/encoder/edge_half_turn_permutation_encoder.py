@@ -1,12 +1,13 @@
+from constants.cubie import Cubie
 from cubie.encoder.edge_tetrad_permutation_encoder import EdgeTetradPermutationEncoder
 
 
 class EdgeHalfTurnPermutationEncoder:
 
     def __init__(self):
-        self.__cycle_encoders = [EdgeTetradPermutationEncoder([8, 9, 10, 11])
-            , EdgeTetradPermutationEncoder([1, 3, 5, 7])
-            , EdgeTetradPermutationEncoder([0, 2, 4, 6])]
+        self.__cycle_encoders = [EdgeTetradPermutationEncoder(Cubie.UP_DOWN_EDGE_SLICE)
+            , EdgeTetradPermutationEncoder(Cubie.LEFT_RIGHT_EDGE_SLICE)
+            , EdgeTetradPermutationEncoder(Cubie.FRONT_BACK_EDGE_SLICE)]
 
     def encode_cubie(self, cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> int:
         """

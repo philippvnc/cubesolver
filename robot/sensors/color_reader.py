@@ -1,10 +1,11 @@
+from micropython_compat import const
 from pybricks.pupdevices import ColorSensor
 
 from robot.output.feedback import Feedback
 
 
 class ColorReader:
-    __LIGHT_INTENSITY = 50
+    __LIGHT_INTENSITY = const(50)
 
     def __init__(self, sensor: ColorSensor, feedback: Feedback):
         self.__sensor = sensor

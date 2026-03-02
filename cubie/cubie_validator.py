@@ -1,3 +1,4 @@
+from constants.cubie import Cubie
 from cubie.encoder.corner_permutation_parity_encoder import CornerPermutationParityEncoder
 from cubie.encoder.edge_permutation_parity_encoder import EdgePermutationParityEncoder
 
@@ -20,11 +21,11 @@ class CubieValidator:
 
     @staticmethod
     def __corner_orientation_is_valid(cubie):
-        return CubieValidator.__summed_orientation_is_multiple_of(cubie[0], 3)
+        return CubieValidator.__summed_orientation_is_multiple_of(cubie[0], Cubie.N_CORNER_ORIENTATIONS)
 
     @staticmethod
     def __edge_orientation_is_valid(cubie):
-        return CubieValidator.__summed_orientation_is_multiple_of(cubie[1], 2)
+        return CubieValidator.__summed_orientation_is_multiple_of(cubie[1], Cubie.N_EDGE_ORIENTATIONS)
 
     @staticmethod
     def __summed_orientation_is_multiple_of(cubies: list[tuple[int, int]], divider: int) -> bool:
