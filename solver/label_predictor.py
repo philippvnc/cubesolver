@@ -8,29 +8,29 @@ class LabelPredictor:
 
     @staticmethod
     def get_cube_labels(scan: list[tuple[int, int, int]]) -> list[int] | None:
-        preprocessed_data = LabelPredictor.__preprocess_hsv_data(scan)
+        preprocessed_data = LabelPredictor._preprocess_hsv_data(scan)
         labels = KMeans.cluster(preprocessed_data, list(range(54))[4::9])
-        LabelPredictor.__print_labels(labels)
-        if not LabelPredictor.__are_labels_of_equal_size(labels):
+        LabelPredictor._print_labels(labels)
+        if not LabelPredictor._are_labels_of_equal_size(labels):
             print("didnt find exactly 9 facelets for each color")
             return None
         return labels
 
     @staticmethod
-    def __preprocess_hsv_data(scan: list[tuple[int, int, int]]) -> list[tuple[float, float, float]]:
-        normalized_data = [LabelPredictor.__normalize_hsv(h, s, v) for h, s, v in scan]
-        return [LabelPredictor.__hsv_to_xyz(h, s, v) for h, s, v in normalized_data]
+    def _preprocess_hsv_data(scan: list[tuple[int, int, int]]) -> list[tuple[float, float, float]]:
+        normalized_data = [LabelPredictor._normalize_hsv(h, s, v) for h, s, v in scan]
+        return [LabelPredictor._hsv_to_xyz(h, s, v) for h, s, v in normalized_data]
 
     @staticmethod
-    def __normalize_hsv(hue: int,
-                        saturation: int,
-                        value: int) -> tuple[float, float, float]:
+    def _normalize_hsv(hue: int,
+                       saturation: int,
+                       value: int) -> tuple[float, float, float]:
         return hue / 360.0, saturation / 100.0, value / 100.0
 
     @staticmethod
-    def __hsv_to_xyz(hue: float,
-                     saturation: float,
-                     value: float) -> tuple[float, float, float]:
+    def _hsv_to_xyz(hue: float,
+                    saturation: float,
+                    value: float) -> tuple[float, float, float]:
         # convert to circular hue space
         hue_angle = 2 * umath.pi * hue
         return (
@@ -40,12 +40,12 @@ class LabelPredictor:
         )
 
     @staticmethod
-    def __are_labels_of_equal_size(labels: list[int]) -> bool:
-        label_sizes = LabelPredictor.__label_sizes(labels)
+    def _are_labels_of_equal_size(labels: list[int]) -> bool:
+        label_sizes = LabelPredictor._label_sizes(labels)
         return all(x == label_sizes[0] for x in label_sizes)
 
     @staticmethod
-    def __label_sizes(labels: list[int]) -> list[int]:
+    def _label_sizes(labels: list[int]) -> list[int]:
         k = max(labels) + 1
         counts = [0] * k
         for c in labels:
@@ -54,7 +54,7 @@ class LabelPredictor:
         return counts
 
     @staticmethod
-    def __print_labels(labels: list[int]):
+    def _print_labels(labels: list[int]):
         print("labels: " + str(labels))
         label_names = [Face.short_name(label) for label in labels]
         print("label names: " + str("".join(label_names)))

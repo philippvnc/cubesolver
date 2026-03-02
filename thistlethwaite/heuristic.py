@@ -24,22 +24,22 @@ from generated.phase_4_5_pruning_table import PHASE_4_5_PRUNING_TABLE
 class Heuristic:
 
     def __init__(self):
-        self.__up_down_edge_slice_encoder = UpDownEdgeSliceEncoder()
-        self.__phase_2_1_encoder = Phase21Encoder()
-        self.__phase_2_2_encoder = Phase22Encoder()
-        self.__phase_3_encoder = Phase3Encoder()
-        self.__phase_4_1_encoder = Phase41Encoder()
-        self.__phase_4_2_encoder = Phase42Encoder()
-        self.__phase_4_3_encoder = Phase43Encoder()
-        self.__phase_4_4_encoder = Phase44Encoder()
-        self.__phase_4_5_encoder = Phase45Encoder()
+        self._up_down_edge_slice_encoder = UpDownEdgeSliceEncoder()
+        self._phase_2_1_encoder = Phase21Encoder()
+        self._phase_2_2_encoder = Phase22Encoder()
+        self._phase_3_encoder = Phase3Encoder()
+        self._phase_4_1_encoder = Phase41Encoder()
+        self._phase_4_2_encoder = Phase42Encoder()
+        self._phase_4_3_encoder = Phase43Encoder()
+        self._phase_4_4_encoder = Phase44Encoder()
+        self._phase_4_5_encoder = Phase45Encoder()
 
     def phase_1_heuristic(self, cubie) -> int:
         return int(EO_PRUNING_TABLE[EdgeOrientationEncoder.from_cubie(cubie)])
 
     def phase_2_heuristic(self, cubie) -> int:
-        index1 = self.__phase_2_1_encoder.encode(cubie)
-        index2 = self.__phase_2_2_encoder.encode(cubie)
+        index1 = self._phase_2_1_encoder.encode(cubie)
+        index2 = self._phase_2_2_encoder.encode(cubie)
         co = CornerOrientationEncoder.from_cubie(cubie)
         return max(
             int(PHASE_2_1_PRUNING[index1]),
@@ -48,12 +48,12 @@ class Heuristic:
         )
 
     def phase_3_heuristic(self, cubie) -> int:
-        return int(PHASE_3_PRUNING_TABLE[self.__phase_3_encoder.encode_cubie(cubie)])
+        return int(PHASE_3_PRUNING_TABLE[self._phase_3_encoder.encode_cubie(cubie)])
 
     def phase_4_heuristic(self, cubie) -> int:
-        index1 = self.__phase_4_1_encoder.encode_cubie(cubie)
-        index2 = self.__phase_4_2_encoder.encode_cubie(cubie)
-        index3 = self.__phase_4_3_encoder.encode_cubie(cubie)
-        index4 = self.__phase_4_4_encoder.encode_cubie(cubie)
-        index5 = self.__phase_4_5_encoder.encode_cubie(cubie)
+        index1 = self._phase_4_1_encoder.encode_cubie(cubie)
+        index2 = self._phase_4_2_encoder.encode_cubie(cubie)
+        index3 = self._phase_4_3_encoder.encode_cubie(cubie)
+        index4 = self._phase_4_4_encoder.encode_cubie(cubie)
+        index5 = self._phase_4_5_encoder.encode_cubie(cubie)
         return int(max(PHASE_4_1_PRUNING_TABLE[index1], PHASE_4_2_PRUNING_TABLE[index2], PHASE_4_3_PRUNING_TABLE[index3], PHASE_4_4_PRUNING_TABLE[index4], PHASE_4_5_PRUNING_TABLE[index5]))

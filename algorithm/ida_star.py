@@ -7,7 +7,7 @@ class IDAStar:
         self.move_pruning = move_pruning
         self.visited = 0
 
-    def __search(self, node, g, bound, last_move, path):
+    def _search(self, node, g, bound, last_move, path):
         self.visited += 1
 
         h = self.heuristic(node)
@@ -27,7 +27,7 @@ class IDAStar:
 
             next_cubie = self.get_next_node(node, move)
 
-            result = self.__search(
+            result = self._search(
                 next_cubie,
                 g + 1,
                 bound,
@@ -52,7 +52,7 @@ class IDAStar:
         while bound <= max_depth:
             show_progress((bound * 100) // max_depth)
             path = []
-            result = self.__search(node, 0, bound, -1, path)
+            result = self._search(node, 0, bound, -1, path)
 
             if result is True:
                 print(f"nodes visited: {self.visited}")

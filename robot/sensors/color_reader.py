@@ -4,21 +4,21 @@ from robot.output.feedback import Feedback
 
 
 class ColorReader:
-    __LIGHT_INTENSITY = 50
+    _LIGHT_INTENSITY = 50
 
     def __init__(self, sensor: ColorSensor, feedback: Feedback):
-        self.__sensor = sensor
-        self.__feedback = feedback
+        self._sensor = sensor
+        self._feedback = feedback
         self.turn_off_lights()
 
     async def read(self) -> tuple[int, int, int]:
-        color = await self.__sensor.hsv()
-        self.__feedback.show_color(color)
+        color = await self._sensor.hsv()
+        self._feedback.show_color(color)
         return color.h, color.s, color.v
 
     async def turn_off_lights(self):
-        await self.__sensor.lights.off()
-        self.__feedback.show_color(None)
+        await self._sensor.lights.off()
+        self._feedback.show_color(None)
 
     async def turn_on_lights(self):
-        await self.__sensor.lights.on((self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY, self.__LIGHT_INTENSITY))
+        await self._sensor.lights.on((self._LIGHT_INTENSITY, self._LIGHT_INTENSITY, self._LIGHT_INTENSITY))

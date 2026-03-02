@@ -17,7 +17,7 @@ class SolutionExecutor:
         n_moves = len(moves)
         self.feedback.show_process(0)
         for i, move in enumerate(moves, 1):
-            command = SolutionExecutor.__translate_to_command(move)
+            command = SolutionExecutor._translate_to_command(move)
             if command is None:
                 continue
             face, direction, amount = command
@@ -27,7 +27,7 @@ class SolutionExecutor:
         await multitask(self.manipulator.release_cube(), self.feedback.solved())
 
     @staticmethod
-    def __translate_to_command(move: int) -> tuple[int, int, int] | None:
+    def _translate_to_command(move: int) -> tuple[int, int, int] | None:
         if move == Move.U:
             return Face.UP, Direction.CLOCKWISE, TurnAmount.QUARTER
         elif move == Move.U2:

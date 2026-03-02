@@ -7,12 +7,12 @@ from cubie.encoder.left_right_edge_slice_encoder import LeftRightEdgeSliceEncode
 class Phase3Encoder:
 
     def __init__(self):
-        self.__left_right_encoder = LeftRightEdgeSliceEncoder()
-        self.__corner_tetrad_encoder = CornerTetradEncoder()
+        self._left_right_encoder = LeftRightEdgeSliceEncoder()
+        self._corner_tetrad_encoder = CornerTetradEncoder()
 
     def encode_cubie(self, cubie):
-        left_right_edge_slice = self.__left_right_encoder.encode_cubie(cubie)
-        corner_tetrad = self.__corner_tetrad_encoder.encode_cubie(cubie)
+        left_right_edge_slice = self._left_right_encoder.encode_cubie(cubie)
+        corner_tetrad = self._corner_tetrad_encoder.encode_cubie(cubie)
         permutation_parity = CornerPermutationParityEncoder.encode_cubie(cubie)
         corner_tetrad_permutation_parity = CornerTetradPermutationParityEncoder.encode_cubie(cubie)
         return (((left_right_edge_slice * 70

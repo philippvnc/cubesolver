@@ -6,14 +6,14 @@ from cubie.encoder.edge_tetrad_permutation_encoder import EdgeTetradPermutationE
 class Phase41Encoder:
 
     def __init__(self):
-        self.__cycle_encoders = [CornerTetradPermutationEncoder(Cubie.CORNER_TETRAD_A),
-                                 EdgeTetradPermutationEncoder(Cubie.UP_DOWN_EDGE_SLICE),
-                                 EdgeTetradPermutationEncoder(Cubie.LEFT_RIGHT_EDGE_SLICE)]
+        self._cycle_encoders = [CornerTetradPermutationEncoder(Cubie.CORNER_TETRAD_A),
+                                EdgeTetradPermutationEncoder(Cubie.UP_DOWN_EDGE_SLICE),
+                                EdgeTetradPermutationEncoder(Cubie.LEFT_RIGHT_EDGE_SLICE)]
 
     def encode_cubie(self, cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> int:
         """
         """
         htp = 0
-        for i, encoder in enumerate(self.__cycle_encoders):
+        for i, encoder in enumerate(self._cycle_encoders):
             htp += pow(24, i) * encoder.encode_cubie(cubie)
         return htp

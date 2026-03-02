@@ -25,34 +25,34 @@ Thistlethwaite cube solver, solves 4 phases iteratively and joins solutions.
 class Thistlethwaite:
 
     def __init__(self, show_progress=lambda i: print(f"progress: {i}")):
-        self.show_progress = show_progress
+        self._show_progress = show_progress
         heuristic = Heuristic()
-        self.__phases: list[Phase] = [
+        self._phases: list[Phase] = [
             Phase1(heuristic.phase_1_heuristic),
             Phase2(heuristic.phase_2_heuristic),
             Phase3(heuristic.phase_3_heuristic),
             Phase4(heuristic.phase_4_heuristic)
         ]
 
-    def __show_phase_progress(self, progress, phase_index):
-        n_phases = len(self.__phases)
-        self.show_progress((progress // n_phases) + (phase_index * (100 // n_phases)))
+    def _show_phase_progress(self, progress, phase_index):
+        n_phases = len(self._phases)
+        self._show_progress((progress // n_phases) + (phase_index * (100 // n_phases)))
 
     def solve(self,
               cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]]) -> list[int] | None:
         solution: list[int] = []
-        self.show_progress(0)
-        for phase_index, phase in enumerate(self.__phases):
-            show_phase_progress = lambda progress: self.__show_phase_progress(progress, phase_index)
-            cubie, phase_solution = Thistlethwaite.__solve_phase(cubie, phase, show_phase_progress)
+        self._show_progress(0)
+        for phase_index, phase in enumerate(self._phases):
+            show_phase_progress = lambda progress: self._show_phase_progress(progress, phase_index)
+            cubie, phase_solution = Thistlethwaite._solve_phase(cubie, phase, show_phase_progress)
             solution.extend(phase_solution)
-        self.show_progress(100)
+        self._show_progress(100)
         return solution
 
     @staticmethod
-    def __solve_phase(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]],
-                      phase: Phase,
-                      show_progress) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
+    def _solve_phase(cubie: tuple[list[tuple[int, int]], list[tuple[int, int]]],
+                     phase: Phase,
+                     show_progress) -> tuple[tuple[list[tuple[int, int]], list[tuple[int, int]]], list[int]] | None:
         print(f"starting {phase.name} solve:")
         solver = PhaseSolver(phase, show_progress)
         solution = solver.solve(cubie)
