@@ -5,7 +5,7 @@ from constants.cubie import Cubie
 class LeftRightEdgeSliceEncoder:
 
     def __init__(self):
-        self.encoder = GroupEncoder(Cubie.UP_DOWN_EDGE_SLICE + Cubie.FRONT_BACK_EDGE_SLICE,
+        self.encoder = GroupEncoder(Cubie.LEFT_RIGHT_EDGE_SLICE + Cubie.FRONT_BACK_EDGE_SLICE,
                                     Cubie.LEFT_RIGHT_EDGE_SLICE)
 
     def encode_edges(self, edges: list[tuple[int, int]]) -> int:
