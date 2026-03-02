@@ -1,4 +1,3 @@
-from micropython_compat import const
 from pybricks.tools import multitask
 
 from cubie.cubie_converter import CubieConverter
@@ -15,7 +14,7 @@ class CubeSolver:
                  cube_scanner: CubeScanner,
                  solution_executor: SolutionExecutor,
                  feedback: Feedback,
-                 max_retries: int = const(2)) -> None:
+                 max_retries: int = 2) -> None:
         self.cube_scanner = cube_scanner
         self.solution_executor = solution_executor
         self.max_retries = max_retries

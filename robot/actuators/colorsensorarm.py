@@ -1,4 +1,3 @@
-from micropython_compat import const
 from pybricks.parameters import Stop
 from pybricks.pupdevices import Motor
 
@@ -7,16 +6,16 @@ from constants.scan_position import ScanPosition
 
 class ColorSensorArm:
     __SCAN_ANGLES = {
-        ScanPosition.CENTER: const(-121),
-        ScanPosition.EDGE: const(-94),
-        ScanPosition.CORNER: const(-80),
+        ScanPosition.CENTER: -121,
+        ScanPosition.EDGE: -94,
+        ScanPosition.CORNER: -80,
     }
-    __TUCK_AWAY_ANGLE = const(-40)
+    __TUCK_AWAY_ANGLE = -40
 
     def __init__(self,
                  motor: Motor,
-                 speed: int = const(1000),
-                 calibration_speed: int = const(400)):
+                 speed: int = 1000,
+                 calibration_speed: int = 400):
         self.__motor = motor
         self.__speed = speed
         self.__calibration_speed = calibration_speed
