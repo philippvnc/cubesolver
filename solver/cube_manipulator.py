@@ -90,4 +90,6 @@ class CubeManipulator:
     async def __turn_cube_horizontally(self,
                                        flipping_arm: Arm,
                                        inactive_arm: Arm) -> None:
+        if flipping_arm.position == Arm.FLIPPED:
+            await multitask(inactive_arm.hold(), flipping_arm.release())
         await multitask(inactive_arm.release(), flipping_arm.flip())
