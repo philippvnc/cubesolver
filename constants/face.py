@@ -1,13 +1,10 @@
-from micropython_compat import const
-
-
 class Face:
-    UP = const(0)
-    RIGHT = const(1)
-    FRONT = const(2)
-    DOWN = const(3)
-    LEFT = const(4)
-    BACK = const(5)
+    UP = 0
+    RIGHT = 1
+    FRONT = 2
+    DOWN = 3
+    LEFT = 4
+    BACK = 5
 
     @staticmethod
     def mirror(face: int) -> int:

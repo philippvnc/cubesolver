@@ -1,5 +1,3 @@
-from micropython_compat import const
-
 from constants.face import Face
 from constants.facelet import Facelet
 
@@ -7,14 +5,14 @@ from constants.facelet import Facelet
 class Cubie:
     # the identity of the 8 corners
     # assumption: starting with UP/DOWN face, then clockwise
-    CORNER_URF = const(0)
-    CORNER_URL = const(1)
-    CORNER_ULB = const(2)
-    CORNER_UBR = const(3)
-    CORNER_DFR = const(4)
-    CORNER_DLF = const(5)
-    CORNER_DBL = const(6)
-    CORNER_DRB = const(7)
+    CORNER_URF = 0
+    CORNER_URL = 1
+    CORNER_ULB = 2
+    CORNER_UBR = 3
+    CORNER_DFR = 4
+    CORNER_DLF = 5
+    CORNER_DBL = 6
+    CORNER_DRB = 7
 
     # all corners
     CORNERS = [CORNER_URF,
@@ -61,24 +59,24 @@ class Cubie:
         (Facelet.LOWER_RIGHT_CORNER, Facelet.LOWER_RIGHT_CORNER, Facelet.LOWER_LEFT_CORNER)
     ]
 
-    N_CORNER_ORIENTATIONS = const(3)
+    N_CORNER_ORIENTATIONS = 3
 
     # the identity of the 12 edges
     # assumptions:
     # starting with UP/DOWN face for top and bottom layer
     # starting with FRONT/BACK face for middle layer
-    EDGE_UR = const(0)
-    EDGE_UF = const(1)
-    EDGE_UL = const(2)
-    EDGE_UB = const(3)
-    EDGE_DR = const(4)
-    EDGE_DF = const(5)
-    EDGE_DL = const(6)
-    EDGE_DB = const(7)
-    EDGE_FR = const(8)
-    EDGE_FL = const(9)
-    EDGE_BL = const(10)
-    EDGE_BR = const(11)
+    EDGE_UR = 0
+    EDGE_UF = 1
+    EDGE_UL = 2
+    EDGE_UB = 3
+    EDGE_DR = 4
+    EDGE_DF = 5
+    EDGE_DL = 6
+    EDGE_DB = 7
+    EDGE_FR = 8
+    EDGE_FL = 9
+    EDGE_BL = 10
+    EDGE_BR = 11
 
     # all edges
     EDGES = [EDGE_UR,
@@ -140,7 +138,7 @@ class Cubie:
         (Facelet.LEFT_EDGE, Facelet.RIGHT_EDGE)
     ]
 
-    N_EDGE_ORIENTATIONS = const(2)
+    N_EDGE_ORIENTATIONS = 2
 
     SOLVED = (
             [(i, 0) for i in range(8)],
