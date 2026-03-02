@@ -35,9 +35,7 @@ python build.py
 
 ### Open tasks
 
-- improve cube flipping accuracy 
 - add more doc
-- use const for constants
 - refactor encoders
 - fine tune phase 4 pruning tables
 - add typehints everywhere
