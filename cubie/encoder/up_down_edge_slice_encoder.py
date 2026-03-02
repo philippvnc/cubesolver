@@ -1,13 +1,12 @@
 from algorithm.group_encoder import GroupEncoder
+from constants.cubie import Cubie
 
 
 class UpDownEdgeSliceEncoder:
-    __UP_DOWN_SLICE_EDGES = [8, 9, 10, 11] # FR, FL, BL, BR
-    __ALL_EDGES = [e for e in range(12)]
 
     def __init__(self):
-        self.encoder = GroupEncoder(UpDownEdgeSliceEncoder.__ALL_EDGES,
-                                    UpDownEdgeSliceEncoder.__UP_DOWN_SLICE_EDGES)
+        self.encoder = GroupEncoder(Cubie.EDGES,
+                                    Cubie.UP_DOWN_EDGE_SLICE)
 
     def encode_edges(self, edges: list[tuple[int, int]]) -> int:
         """

@@ -1,13 +1,12 @@
 from algorithm.group_encoder import GroupEncoder
+from constants.cubie import Cubie
 
 
 class CornerTetradEncoder:
-    __TETRAD_CORNERS = [0, 2, 5, 7] # URF, ULB, DFL, DRB
-    __POSSIBLE_CORNERS = [0, 1, 2, 3, 4, 5, 6, 7] # all corners
 
     def __init__(self):
-        self.encoder = GroupEncoder(CornerTetradEncoder.__POSSIBLE_CORNERS,
-                                    CornerTetradEncoder.__TETRAD_CORNERS)
+        self.encoder = GroupEncoder(Cubie.CORNERS,
+                                    Cubie.CORNER_TETRAD_A)
 
     def encode_corners(self, corners: list[tuple[int, int]]) -> int:
         """

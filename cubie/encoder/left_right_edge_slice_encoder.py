@@ -1,12 +1,12 @@
 from algorithm.group_encoder import GroupEncoder
+from constants.cubie import Cubie
 
 
 class LeftRightEdgeSliceEncoder:
-    __LEFT_RIGHT_SLICE_EDGES = [1, 3, 7, 5] # UF, UB, DB, DF
-    __POSSIBLE_SLICE_POSITIONS = [0, 1, 2, 3, 4, 5, 6, 7] # top and bottom layer
 
     def __init__(self):
-        self.encoder = GroupEncoder(LeftRightEdgeSliceEncoder.__POSSIBLE_SLICE_POSITIONS, LeftRightEdgeSliceEncoder.__LEFT_RIGHT_SLICE_EDGES)
+        self.encoder = GroupEncoder(Cubie.UP_DOWN_EDGE_SLICE + Cubie.FRONT_BACK_EDGE_SLICE,
+                                    Cubie.LEFT_RIGHT_EDGE_SLICE)
 
     def encode_edges(self, edges: list[tuple[int, int]]) -> int:
         """

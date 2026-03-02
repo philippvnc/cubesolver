@@ -1,6 +1,9 @@
+from micropython_compat import const
+
+
 class Axis:
-    VERTICAL = 0
-    HORIZONTAL = 1
+    VERTICAL = const(0)
+    HORIZONTAL = const(1)
 
     @staticmethod
     def name(axis: int) -> str:

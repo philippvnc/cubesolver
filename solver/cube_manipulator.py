@@ -1,4 +1,3 @@
-import urandom
 from pybricks.tools import multitask
 
 from constants.axis import Axis
@@ -87,13 +86,6 @@ class CubeManipulator:
             return self.__left_arm, self.__right_arm
         else:
             return self.__right_arm, self.__left_arm
-
-    def __print_move(self, axis: int, direction: int, amount: int) -> None:
-        print("turning cube " + TurnAmount.name(amount) + " " + Direction.name(direction) + " around " + Axis.name(
-            axis) + " axis")
-
-    async def turn_cube_randomly(self):
-        await self.turn_cube(urandom.randint(0, 1), urandom.choice([1, -1]), urandom.choice([1, 2]))
 
     async def __turn_cube_horizontally(self,
                                        flipping_arm: Arm,

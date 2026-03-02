@@ -1,3 +1,4 @@
+from micropython_compat import const
 from pybricks.hubs import InventorHub
 from pybricks.parameters import Color
 from pybricks.tools import Matrix
@@ -6,7 +7,7 @@ from constants.facelet import Facelet
 
 
 class Feedback:
-    __VOLUME = 50
+    __VOLUME = const(50)
     __PROGRESS_PIXEL_ORDER = [
         (4, 0), (2, 2), (3, 4), (1, 1), (0, 3),
         (4, 4), (3, 1), (2, 0), (1, 4), (0, 1),
@@ -21,8 +22,8 @@ class Feedback:
         [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
     ]
-    __OFF_INTENSITY = 30
-    __ON_INTENSITY = 80
+    __OFF_INTENSITY = const(30)
+    __ON_INTENSITY = const(80)
 
     def __init__(self, hub: InventorHub):
         self.__display = hub.display

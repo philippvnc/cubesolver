@@ -1,8 +1,11 @@
+from micropython_compat import const
+
+
 class TurnAmount:
-    NONE = 0
-    QUARTER = 1
-    HALF = 2
-    FULL = 4
+    NONE = const(0)
+    QUARTER = const(1)
+    HALF = const(2)
+    FULL = const(4)
 
     @staticmethod
     def name(amount: int) -> str:

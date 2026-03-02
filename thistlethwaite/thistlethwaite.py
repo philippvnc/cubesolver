@@ -24,7 +24,7 @@ Thistlethwaite cube solver, solves 4 phases iteratively and joins solutions.
 
 class Thistlethwaite:
 
-    def __init__(self, show_progress):
+    def __init__(self, show_progress=lambda i: print(f"progress: {i}")):
         self.show_progress = show_progress
         heuristic = Heuristic()
         self.__phases: list[Phase] = [
