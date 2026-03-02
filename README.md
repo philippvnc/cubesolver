@@ -35,7 +35,6 @@ python build.py
 
 ### Open tasks
 
-- add real solve time test on robot hardware
 - improve cube flipping accuracy 
 - add more doc
 - use const for constants

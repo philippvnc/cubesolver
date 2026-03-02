@@ -12,7 +12,7 @@ class TestThistlethwaite(unittest.TestCase):
         expected_solved_cubie = TestCubieUtil.solved_cubie()
         scrambled_cubie = TestCubieUtil.scrambled_cubie(Move.ALL_MOVES, 7)
 
-        solution = Thistlethwaite.solve(scrambled_cubie)
+        solution = Thistlethwaite().solve(scrambled_cubie)
         actual_solved_cubie = CubieMoveApplier.apply_many(scrambled_cubie, solution)
 
         self.assertEqual(actual_solved_cubie, expected_solved_cubie)
