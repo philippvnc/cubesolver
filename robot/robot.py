@@ -1,4 +1,3 @@
-from micropython_compat import const
 from pybricks.tools import wait
 
 from robot.actuators.arm import Arm
@@ -16,7 +15,7 @@ from solver.solution_executor import SolutionExecutor
 
 
 class Robot:
-    _START_UP_DELAY_MS = const(2000)
+    _START_UP_DELAY_MS = 2000
 
     def __init__(self):
         hardware = Hardware()

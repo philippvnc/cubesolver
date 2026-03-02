@@ -1,4 +1,3 @@
-from micropython_compat import const
 from pybricks.pupdevices import UltrasonicSensor
 from pybricks.tools import wait
 
@@ -6,12 +5,12 @@ from robot.output.feedback import Feedback
 
 
 class CubeDetector:
-    MINIMAL_ALIGNMENT_DISTANCE: int = const(40)
-    _PRESENCE_THRESHOLD: int = const(85)
-    _ABSENCE_THRESHOLD: int = const(100)
-    _NUMBER_OF_PRESENCE_READINGS: int = const(30)
-    _TOLERANCE: int = const(2)
-    _MEASUREMENT_INTERVAL_MILLIS: int = const(50)
+    MINIMAL_ALIGNMENT_DISTANCE: int = 40
+    _PRESENCE_THRESHOLD: int = 85
+    _ABSENCE_THRESHOLD: int = 100
+    _NUMBER_OF_PRESENCE_READINGS: int = 30
+    _TOLERANCE: int = 2
+    _MEASUREMENT_INTERVAL_MILLIS: int = 50
 
     def __init__(self,
                  sensor: UltrasonicSensor,

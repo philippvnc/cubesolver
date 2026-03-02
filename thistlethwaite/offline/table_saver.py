@@ -7,7 +7,10 @@ class TableSaver:
         file_name = TableSaver._GENERATED_DIR + name.lower() + TableSaver._FILE_EXTENSION
         table_name = name.upper()
 
-        byte_values = bytes(table)
+        # Replace unreachable -1 states with 255 so it fits in the byte range
+        sanitized = [(v if v >= 0 else 255) for v in table]
+
+        byte_values = bytes(sanitized)
 
         with open(file_name, "w") as f:
             f.write(table_name + " = ")

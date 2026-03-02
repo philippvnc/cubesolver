@@ -1,4 +1,3 @@
-from micropython_compat import const
 from pybricks.pupdevices import Motor
 
 from robot.sensors.cube_detector import CubeDetector
@@ -6,17 +5,17 @@ from robot.sensors.cube_detector import CubeDetector
 
 class Turntable:
     # unfortunately this value depends on axle and gear positions
-    _INITIAL_PHYSICAL_ANGLE_OFFSET = const(68)
-    _CALIBRATION_INCREMENT = const(120)
-    _ANGLE_PER_AMOUNT = const(90)
-    _OVERTURN_ANGLE = const(2)
-    _NEUTRAL_OVERTURN_STATE = const(0)
+    _INITIAL_PHYSICAL_ANGLE_OFFSET = 68
+    _CALIBRATION_INCREMENT = 120
+    _ANGLE_PER_AMOUNT = 90
+    _OVERTURN_ANGLE = 2
+    _NEUTRAL_OVERTURN_STATE = 0
 
     def __init__(self,
                  motor: Motor,
                  detector: CubeDetector,
-                 speed: int = const(800),
-                 slow_speed: int = const(135)) -> None:
+                 speed: int = 800,
+                 slow_speed: int = 135) -> None:
         self._motor = motor
         self._detector = detector
         self._speed = speed

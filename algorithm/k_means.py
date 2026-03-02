@@ -1,13 +1,10 @@
-from micropython_compat import const
-
-
 class KMeans:
 
     @staticmethod
     def cluster(data: list[tuple[float, float, float]],
                 centroid_ids: list[int],
-                n_clusters: int = const(6),
-                max_iterations: int = const(30)) -> list[int]:
+                n_clusters: int = 6,
+                max_iterations: int = 30) -> list[int]:
 
         # initial centroids
         centroids = [data[i] for i in centroid_ids]
@@ -29,7 +26,7 @@ class KMeans:
         return assignments
 
     @staticmethod
-    def _converged(old_centroids, new_centroids, tol=const(1e-5)) -> bool:
+    def _converged(old_centroids, new_centroids, tol=1e-5) -> bool:
         for a, b in zip(old_centroids, new_centroids):
             if KMeans._dist(a, b) > tol:
                 return False

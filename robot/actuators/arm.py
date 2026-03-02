@@ -1,22 +1,21 @@
-from micropython_compat import const
 from pybricks.parameters import Stop
 from pybricks.pupdevices import Motor
 
 
 class Arm:
-    _HOLDING_ANGLE = const(-102)
-    _FLIPPING_ANGLE = const(-133)
-    _RELEASING_ANGLE = const(-5)
+    _HOLDING_ANGLE = -102
+    _FLIPPING_ANGLE = -133
+    _RELEASING_ANGLE = -5
 
-    RELEASED = const(0)
-    HOLDING = const(1)
-    FLIPPED = const(2)
+    RELEASED = 0
+    HOLDING = 1
+    FLIPPED = 2
 
     def __init__(self,
                  name: str,
                  motor: Motor,
-                 speed: int = const(700),
-                 calibration_speed: int = const(300)):
+                 speed: int = 700,
+                 calibration_speed: int = 300):
         self.name = name
         self._motor = motor
         self._speed = speed

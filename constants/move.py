@@ -1,27 +1,24 @@
-from micropython_compat import const
-
-
 class Move:
-    U = const(0)
-    U2 = const(1)
-    U_ = const(2)
-    R = const(3)
-    R2 = const(4)
-    R_ = const(5)
-    F = const(6)
-    F2 = const(7)
-    F_ = const(8)
-    D = const(9)
-    D2 = const(10)
-    D_ = const(11)
-    L = const(12)
-    L2 = const(13)
-    L_ = const(14)
-    B = const(15)
-    B2 = const(16)
-    B_ = const(17)
+    U = 0
+    U2 = 1
+    U_ = 2
+    R = 3
+    R2 = 4
+    R_ = 5
+    F = 6
+    F2 = 7
+    F_ = 8
+    D = 9
+    D2 = 10
+    D_ = 11
+    L = 12
+    L2 = 13
+    L_ = 14
+    B = 15
+    B2 = 16
+    B_ = 17
 
-    ALL_MOVES : list[int] = [U, U2, U_, R, R2, R_, F, F2, F_, D, D2, D_, L, L2, L_, B, B2, B_]
+    ALL_MOVES = [U, U2, U_, R, R2, R_, F, F2, F_, D, D2, D_, L, L2, L_, B, B2, B_]
 
     @staticmethod
     def print_moves(moves: list[int]) -> None:
