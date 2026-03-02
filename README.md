@@ -37,6 +37,7 @@ python build.py
 
 - add more doc
 - refactor encoders
+- revisit phase 3 invariants / encoders
 - fine tune phase 4 pruning tables
 - add typehints everywhere
 - replace debugging prints with logging
