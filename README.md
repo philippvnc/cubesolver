@@ -35,9 +35,12 @@ python build.py
 
 ### Open tasks
 
+- add real solve time test on robot hardware
+- improve cube flipping accuracy 
 - add more doc
 - use const for constants
 - refactor encoders
+- fine tune phase 4 pruning tables
 - add typehints everywhere
 - replace debugging prints with logging
 - add building instructions
