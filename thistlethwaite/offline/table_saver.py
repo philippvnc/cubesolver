@@ -1,10 +1,10 @@
 class TableSaver:
-    __FILE_EXTENSION = ".py"
-    __GENERATED_DIR = "generated/"
+    _FILE_EXTENSION = ".py"
+    _GENERATED_DIR = "generated/"
 
     @staticmethod
     def save_table(table, name: str) -> None:
-        file_name = TableSaver.__GENERATED_DIR + name.lower() + TableSaver.__FILE_EXTENSION
+        file_name = TableSaver._GENERATED_DIR + name.lower() + TableSaver._FILE_EXTENSION
         table_name = name.upper()
 
         byte_values = bytes(table)

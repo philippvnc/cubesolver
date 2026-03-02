@@ -7,28 +7,28 @@ class CubieValidator:
 
     @staticmethod
     def valid(cubie) -> bool:
-        if not CubieValidator.__corner_orientation_is_valid(cubie):
+        if not CubieValidator._corner_orientation_is_valid(cubie):
             return False
-        if not CubieValidator.__edge_orientation_is_valid(cubie):
+        if not CubieValidator._edge_orientation_is_valid(cubie):
             return False
-        if not CubieValidator.__parities_are_equal(cubie):
+        if not CubieValidator._parities_are_equal(cubie):
             return False
         return True
 
     @staticmethod
-    def __parities_are_equal(cubie):
+    def _parities_are_equal(cubie):
         return CornerPermutationParityEncoder.encode_cubie(cubie) == EdgePermutationParityEncoder.encode_cubie(cubie)
 
     @staticmethod
-    def __corner_orientation_is_valid(cubie):
-        return CubieValidator.__summed_orientation_is_multiple_of(cubie[0], Cubie.N_CORNER_ORIENTATIONS)
+    def _corner_orientation_is_valid(cubie):
+        return CubieValidator._summed_orientation_is_multiple_of(cubie[0], Cubie.N_CORNER_ORIENTATIONS)
 
     @staticmethod
-    def __edge_orientation_is_valid(cubie):
-        return CubieValidator.__summed_orientation_is_multiple_of(cubie[1], Cubie.N_EDGE_ORIENTATIONS)
+    def _edge_orientation_is_valid(cubie):
+        return CubieValidator._summed_orientation_is_multiple_of(cubie[1], Cubie.N_EDGE_ORIENTATIONS)
 
     @staticmethod
-    def __summed_orientation_is_multiple_of(cubies: list[tuple[int, int]], divider: int) -> bool:
+    def _summed_orientation_is_multiple_of(cubies: list[tuple[int, int]], divider: int) -> bool:
         summed_orientations = 0
         for _, orientation in cubies:
             summed_orientations += orientation

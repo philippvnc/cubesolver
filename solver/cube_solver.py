@@ -22,11 +22,11 @@ class CubeSolver:
         self.feedback = feedback
 
     async def solve_cube(self) -> None:
-        solution = await self.__get_solution()
+        solution = await self._get_solution()
         if solution:
             await multitask(self.solution_executor.execute_solution(solution), self.feedback.success())
 
-    async def __get_solution(self) -> list[int] | None:
+    async def _get_solution(self) -> list[int] | None:
         for scan_attempt in range(self.max_retries):
             print("scan attempt " + str(scan_attempt))
             scan = await self.cube_scanner.scan()
